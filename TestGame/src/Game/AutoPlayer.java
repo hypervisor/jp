@@ -11,12 +11,18 @@ public class AutoPlayer extends BasePlayer {
     private BasePlayer target;
     private float movementSpeed;
     private float nextShotTime;
+    private float fireRate;
+    private float nextBirthTime;
+    private float birthRate;
 
     public AutoPlayer(String name, Vector2 position) {
         super(name, position, Color.GREEN);
         setRandomTarget();
-        movementSpeed = Util.randomBetween(25, 60);
-        nextShotTime = Application.time + 1f;
+        movementSpeed = Util.randomBetween(25, 100);
+        fireRate = Util.randomBetween(0.2f, 2.5f);
+        nextShotTime = Application.time + fireRate;
+        birthRate = Util.randomBetween(8f, 20f);
+        nextBirthTime = Application.time + birthRate;
     }
 
     public void setRandomTarget() {
@@ -41,6 +47,15 @@ public class AutoPlayer extends BasePlayer {
         if (target.isDead())
             setRandomTarget();
 
+        if (Application.time >= nextBirthTime) {
+            // Every few seconds a bot can have 1 to 3 children.
+            int children = Util.randomBetween(1, 3);
+            World.spawnBots(children);
+            nextBirthTime = Application.time + birthRate;
+
+            System.out.println(name + " gave birth to " + children + " children");
+        }
+
         setPosition(Vector2.moveTowards(position, target.position, movementSpeed * deltaTime));
 
         if (!isOutOfAmmo() && Application.time >= nextShotTime) {
@@ -55,7 +70,7 @@ public class AutoPlayer extends BasePlayer {
             // Add projectile to entity list
             EntityManager.addEntity(p);
 
-            nextShotTime = Application.time + Util.randomBetween(0.2f, 1.5f);
+            nextShotTime = Application.time + fireRate;
         }
     }
 
@@ -68,6 +83,8 @@ public class AutoPlayer extends BasePlayer {
             // Reset values
             this.health = 100;
             this.ammo = 24;
+            //movementSpeed = Util.randomBetween(25, 60);
+            //fireRate = Util.randomBetween(0.2f, 2.5f);
             setPosition(Util.randomPositionInsideZone());
 
             System.out.println("Player " + name + " respawned");

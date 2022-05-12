@@ -1,6 +1,7 @@
 package Game;
 
 import Engine.*;
+import Items.Booster;
 import Killstreaks.FMJAmmo;
 import Killstreaks.GasMask;
 
@@ -18,6 +19,8 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     protected int kills;
     protected int deaths;
     public int currentStreak;
+    private float boosterTime;
+    private boolean hasBooster;
 
     public GasMask gasMask;
     public FMJAmmo fmjAmmo;
@@ -58,6 +61,11 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
     public void onDied() {
         addDeath();
+    }
+
+    public void giveBooster() {
+        boosterTime = Application.time + Booster.BOOSTER_DURATION;
+        hasBooster = true;
     }
 
     public Vector2 getChest() {
@@ -147,6 +155,14 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     @Override
     public void update(Input i, float deltaTime) {
         // Run logic here
+
+        if (hasBooster) {
+            if (Application.time >= boosterTime) {
+                hasBooster = false;
+            } else {
+                giveHealth((100 / Booster.BOOSTER_DURATION) * deltaTime);
+            }
+        }
     }
 
     @Override

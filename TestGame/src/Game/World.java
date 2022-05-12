@@ -10,7 +10,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-        spawnBots(100);
+        spawnBots(10);
 
         World.spawnBarrels();
         World.spawnBandages();
@@ -18,6 +18,7 @@ public class World {
         World.spawnPoison();
         World.spawnSuperBandage();
         World.spawnLandMine();
+        World.spawnBoosters();
 
         EntityManager.addEntity(new Scoreboard());
     }
@@ -31,6 +32,12 @@ public class World {
     public static void spawnBarrels() {
         for (int i = 0; i < Util.randomBetween(Barrel.MIN_AMOUNT, Barrel.MAX_AMOUNT); i++) {
             EntityManager.addEntity(new Barrel(Util.randomPosition()));
+        }
+    }
+
+    public static void spawnBoosters() {
+        for (int i = 0; i < Util.randomBetween(Booster.MIN_AMOUNT, Booster.MAX_AMOUNT); i++) {
+            EntityManager.addEntity(new Booster(Util.randomPosition()));
         }
     }
 
@@ -58,7 +65,6 @@ public class World {
         EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
         EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
         EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
-
     }
 
     public static void spawnSuperBandage(){
@@ -68,16 +74,11 @@ public class World {
     public static void onRespawn() {
         SafeZone.instance.onRespawn();
 
+        EntityManager.addEntity(new Ammo(Util.randomPosition()));
+        EntityManager.addEntity(new Bandage(Util.randomPosition()));
+
         if (Util.randomChance(15)) {
             EntityManager.addEntity(new Barrel(Util.randomPositionInsideZone()));
-        }
-
-        if (Util.randomChance(40)) {
-            EntityManager.addEntity(new Bandage(Util.randomPosition()));
-        }
-
-        if (Util.randomChance(40)) {
-            EntityManager.addEntity(new Ammo(Util.randomPosition()));
         }
 
         if (Util.randomChance(40)) {
@@ -86,6 +87,10 @@ public class World {
 
         if (Util.randomChance(60)) {
             EntityManager.addEntity(new Poison(Util.randomPositionInsideZone()));
+        }
+
+        if (Util.randomChance(15)) {
+            EntityManager.addEntity(new Booster(Util.randomPosition()));
         }
 
         if (Util.randomChance(15)) {
