@@ -23,18 +23,7 @@ public class Board extends JPanel implements ActionListener {
         requestFocus();
         requestFocusInWindow();
 
-        EntityManager.addEntity(new SafeZone());
-
-        EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
-        EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-
-        EntityManager.addEntity(new Scoreboard());
-
-        World.spawnBandages();
-        World.spawnAmmo();
-        World.spawnPoison();
-        World.spawnSuperBandage();
-        World.spawnLandMine();
+        World.setup();
 
         updateTimer = new Timer(TIMER_DELAY, this);
         updateTimer.start();

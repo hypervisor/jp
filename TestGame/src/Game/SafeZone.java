@@ -35,9 +35,6 @@ public class SafeZone extends BaseEntity {
     }
 
     private Vector2 getZoneDrawPosition() {
-        //Vector2 screenSize = Application.getScreenSize();
-        //return new Vector2((screenSize.x - getZoneDiameter()) / 2, (screenSize.y - getZoneDiameter()) / 2);
-
         return new Vector2(zonePosition.x - zoneRadius, zonePosition.y - zoneRadius);
     }
 
@@ -95,15 +92,15 @@ public class SafeZone extends BaseEntity {
         d.drawCircle(drawPos, getZoneDiameter(), Color.BLUE);
 
         if (ZONE_DEBUG) {
-            d.fillRect(zonePosition, new Vector2(50, 50), Color.RED);
+            d.drawCircle(zonePosition, 25, Color.RED);
             d.drawLine(Vector2.zero(), zonePosition, Color.RED);
             d.drawText(zonePosition, "Actual SafeZone position");
 
-            d.fillRect(drawPos, new Vector2(50, 50), Color.BLUE);
+            d.drawCircle(drawPos, 25, Color.BLUE);
             d.drawLine(Vector2.zero(), getZoneDrawPosition(), Color.BLUE);
             d.drawText(drawPos, "SafeZone draw position");
 
-            d.fillRect(zoneTarget, new Vector2(50, 50), Color.YELLOW);
+            d.drawCircle(zoneTarget, 25, Color.YELLOW);
             d.drawLine(Vector2.zero(), zoneTarget, Color.YELLOW);
             d.drawText(zoneTarget, "Target SafeZone position");
         }

@@ -5,6 +5,21 @@ import Game.*;
 import Items.*;
 
 public class World {
+    public static void setup() {
+        EntityManager.addEntity(new SafeZone());
+
+        EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
+        EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
+
+        World.spawnBandages();
+        World.spawnAmmo();
+        World.spawnPoison();
+        World.spawnSuperBandage();
+        World.spawnLandMine();
+
+        EntityManager.addEntity(new Scoreboard());
+    }
+
     public static void spawnBandages() {
         for (int i = 0; i < Util.randomBetween(Bandage.MIN_AMOUNT, Bandage.MAX_AMOUNT); i++) {
             EntityManager.addEntity(new Bandage(Util.randomPosition()));
