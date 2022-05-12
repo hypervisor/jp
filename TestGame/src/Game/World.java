@@ -23,6 +23,10 @@ public class World {
         }
     }
 
+    public static void spawnLandMine() {
+        EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+    }
+
     public static void spawnSuperBandage(){
         EntityManager.addEntity(new SuperBandage(Util.randomPosition()));
     }

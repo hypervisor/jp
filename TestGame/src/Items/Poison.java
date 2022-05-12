@@ -18,6 +18,8 @@ public class Poison extends BaseItem {
     @Override
     public boolean onPickup(BasePlayer player) {
         player.takeDamage(Util.randomBetween(20,40));
+        System.out.println("Player " + player.name + " consumed poison");
+
         return true;
     }
 }
