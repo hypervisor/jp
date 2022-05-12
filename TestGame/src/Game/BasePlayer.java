@@ -42,7 +42,7 @@ public class BasePlayer extends BaseEntity {
         this.shootDirection = new Vector2(0, 0);
         this.position = position;
         this.collider = new BoxCollider(position, new Vector2(50 * playerSize, 165 * playerSize));
-        this.gasMask = new GasMask();
+        this.gasMask = new GasMask(this);
 
         headSize = 50 * playerSize;
         neck = new Vector2(headSize / 2, headSize);
@@ -128,10 +128,12 @@ public class BasePlayer extends BaseEntity {
     }
 
     public void addDeath() {
+        gasMask.resetStreak();
         deaths++;
     }
 
     public void addKill() {
+        gasMask.incrementStreak();
         kills++;
     }
 

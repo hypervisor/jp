@@ -2,7 +2,7 @@
 
 ## Features
 
-- Killstreaks
+- Killstreaks- (Granade, Gasmask, K9 unit, Freeze bomb)
 - Obstacles
 - Map expansion (Camera? Choose center position between players and focus on that)
 - Spawn items (ammo/bandage) occasionally (every death/kill?)

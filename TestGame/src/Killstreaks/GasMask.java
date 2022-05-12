@@ -4,11 +4,11 @@ import Game.BaseKillstreak;
 import Game.BasePlayer;
 
 public class GasMask extends BaseKillstreak {
-    public GasMask() {
-        super(3);
+    public GasMask(BasePlayer player) {
+        super(3, player);
     }
     @Override
-    protected void onStreakAcquired(BasePlayer player) {
+    protected void onStreakAcquired() {
 
     }
 }
