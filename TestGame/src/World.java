@@ -14,4 +14,11 @@ public class World {
             EntityManager.addEntity(new Ammo(Util.randomPosition()));
         }
     }
+
+    public static void spawnPoison() {
+        Random r = new Random();
+        for (int i = 0; i < Util.randomBetween(Poison.MIN_AMOUNT, Poison.MAX_AMOUNT); i++) {
+            EntityManager.addEntity(new Poison(Util.randomPositionInsideZone()));
+        }
+    }
 }
