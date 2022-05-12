@@ -10,6 +10,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
+        spawnBots(10);
 
         World.spawnBarrels();
         World.spawnBandages();
@@ -19,6 +20,12 @@ public class World {
         World.spawnLandMine();
 
         EntityManager.addEntity(new Scoreboard());
+    }
+
+    public static void spawnBots(int count) {
+        for (int i = 0; i < count; i++) {
+            EntityManager.spawnPlayer(new AutoPlayer("Bot " + i, Util.randomPositionInsideZone()));
+        }
     }
 
     public static void spawnBarrels() {

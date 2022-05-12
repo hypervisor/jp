@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import Engine.*;
 import Game.*;
 
-public class ArrowPlayer extends BasePlayer {
+public class ArrowPlayer extends ControllablePlayer {
     private static final KeyConfig ARROW_CONFIG = getConfig();
     private static KeyConfig getConfig() {
         KeyConfig cfg = new KeyConfig();

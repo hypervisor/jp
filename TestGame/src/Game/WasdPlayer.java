@@ -7,7 +7,7 @@ import Game.KeyConfig;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class WasdPlayer extends BasePlayer {
+public class WasdPlayer extends ControllablePlayer {
     private static final KeyConfig WASD_CONFIG = getConfig();
     private static KeyConfig getConfig() {
         KeyConfig cfg = new KeyConfig();

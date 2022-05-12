@@ -8,37 +8,33 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class BasePlayer extends BaseEntity {
-    private static final float MOVEMENT_SPEED = 200;
-    private static final float AIM_SPEED = 10;
-    private static final boolean DEBUG_MODE = false;
+    private static final boolean DEBUG_MODE = true;
 
     public String name;
-    private float playerSize;
-    private KeyConfig keys;
-    private int ammo;
+    protected float playerSize;
+    protected int ammo;
     private Color skinColor;
-    private Vector2 shootDirection;
-    private int kills;
-    private int deaths;
+    protected Vector2 shootDirection;
+    protected int kills;
+    protected int deaths;
     public int currentStreak;
 
     public GasMask gasMask;
     public FMJAmmo fmjAmmo;
 
-    private float headSize;
-    private Vector2 neck;
-    private Vector2 chest;
-    private Vector2 leftArm;
-    private Vector2 rightArm;
-    private Vector2 cock;
-    private Vector2 leftFoot;
-    private Vector2 rightFoot;
+    public float headSize;
+    public Vector2 neck;
+    public Vector2 chest;
+    public Vector2 leftArm;
+    public Vector2 rightArm;
+    public Vector2 cock;
+    public Vector2 leftFoot;
+    public Vector2 rightFoot;
 
-    public BasePlayer(String name, Vector2 position, KeyConfig keys, Color skinColor) {
+    public BasePlayer(String name, Vector2 position, Color skinColor) {
         this.name = name;
         this.health = 100f;
         this.playerSize = 0.5f;
-        this.keys = keys;
         this.ammo = 20;
         this.skinColor = skinColor;
         this.shootDirection = new Vector2(0, 0);
@@ -80,7 +76,7 @@ public class BasePlayer extends BaseEntity {
         return new Vector2(position.x + ((50 * playerSize) / 2), position.y + ((165 * playerSize) / 2));
     }
 
-    private boolean isOutOfAmmo() {
+    public boolean isOutOfAmmo() {
         return ammo == 0;
     }
 
@@ -113,55 +109,6 @@ public class BasePlayer extends BaseEntity {
         return true;
     }
 
-    private void handleShotFired() {
-        ammo--;
-
-        Vector2 currentShootDirection = new Vector2(shootDirection.x, shootDirection.y);
-        if (currentShootDirection.isZero()) {
-            currentShootDirection = Vector2.left();
-        }
-
-        Vector2 shootPosition = new Vector2(position.x + chest.x, position.y + chest.y);
-
-        // Spawn projectile
-        Projectile p = new Projectile(this, shootPosition, currentShootDirection);
-
-        // Add projectile to entity list
-        EntityManager.addEntity(p);
-    }
-
-    private void handleMovement(Input i, float deltaTime) {
-        float speed = MOVEMENT_SPEED * deltaTime;
-
-        Vector2 targetDirection = new Vector2(shootDirection.x, shootDirection.y);
-
-        // Handle horizontal movement
-        if (i.getKey(keys.moveLeft)) {
-            //this.shootDirection.x = -1;
-            targetDirection.x = -1;
-            this.position.x -= speed;
-        }
-        if (i.getKey(keys.moveRight)) {
-            //this.shootDirection.x = 1;
-            targetDirection.x = 1;
-            this.position.x += speed;
-        }
-
-        // Handle vertical movement
-        if (i.getKey(keys.moveUp)) {
-            //this.shootDirection.y = -1;
-            targetDirection.y = -1;
-            this.position.y -= speed;
-        }
-        if (i.getKey(keys.moveDown)) {
-            //this.shootDirection.y = 1;
-            targetDirection.y = 1;
-            this.position.y += speed;
-        }
-
-        shootDirection = Vector2.moveTowards(shootDirection, targetDirection, AIM_SPEED * deltaTime).getNormalized();
-    }
-
     public void addDeath() {
         currentStreak = 0;
         gasMask.incrementStreak();
@@ -188,37 +135,9 @@ public class BasePlayer extends BaseEntity {
         this.ammo += ammo;
     }
 
-    private void respawn() {
-        // Reset values
-        this.health = 100;
-        this.ammo = 30;
-        setPosition(Util.randomPositionInsideZone());
-        addDeath(); // TODO: Make a onDeath() method called from takeDamage if isDead() and addDeath() there instead.
-
-        // NOTE: Respawning breaks colliders or some shit
-        System.out.println("Player " + name + " respawned");
-
-        World.onRespawn();
-    }
-
     @Override
     public void update(Input i, float deltaTime) {
-        // Don't run game logic if player is dead
-        if (isDead()) {
-            if (i.getKeyDown(KeyEvent.VK_R)) {
-                respawn();
-            } else {
-                return;
-            }
-        }
-
-        // Handle player movement
-        handleMovement(i, deltaTime);
-
-        // Handle shooting
-        if (i.getKeyDown(keys.shoot) && !isOutOfAmmo()) {
-            handleShotFired();
-        }
+        // Run logic here
     }
 
     @Override
