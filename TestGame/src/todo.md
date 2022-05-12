@@ -4,11 +4,11 @@
 
 - Killstreaks
 - Obstacles
-- Map expansion (Camera?)
+- Map expansion (Camera? Choose center position between players and focus on that)
 - Spawn items (ammo/bandage) occasionally (every death/kill?)
 - Textures?
 - Bots / zombies?
-- Weapon system (semi/full-automatic guns, firerate, damage)
+- Weapon system (semi/full-automatic guns, firerate, damage, FMJ bullets (does little damage through walls))
 - Add ``Time.time``; en variabel som sier hvor lenge spillet har kjørt  
 Brukes for "timers" osv.
 - Timer for projectile death

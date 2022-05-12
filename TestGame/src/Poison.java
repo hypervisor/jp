@@ -1,0 +1,18 @@
+import java.awt.*;
+
+public class Poison extends BaseItem {
+    public static final int MIN_AMOUNT = 2;
+    public static final int MAX_AMOUNT = 5;
+
+    public Poison(Vector2 position) {
+        this.displayText = "Poison";
+        this.displayColor = Color.GREEN;
+        this.position = position;
+    }
+
+    @Override
+    public boolean onPickup(BasePlayer player) {
+        player.takeDamage(50);
+        return true;
+    }
+}
