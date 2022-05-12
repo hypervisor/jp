@@ -26,7 +26,7 @@ public class Scoreboard extends BaseEntity {
         Collections.sort(players);
 
         //d.fillRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25), SCOREBOARD_BG_COLOR);
-        d.drawRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25));
+        //d.drawRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25));
 
         int offset = 0;
         for (BasePlayer player : players) {

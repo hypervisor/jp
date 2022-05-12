@@ -7,7 +7,7 @@ import Killstreaks.GasMask;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
+public abstract class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
     private static final boolean DEBUG_MODE = false;
 
     public String name;
@@ -54,6 +54,14 @@ public class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
         cock = new Vector2(neck.x, neck.y + (75 * playerSize));
         leftFoot = new Vector2(cock.x - (20 * playerSize), cock.y + (40 * playerSize));
         rightFoot = new Vector2(cock.x + (20 * playerSize), cock.y + (40 * playerSize));
+    }
+
+    public void onDied() {
+        addDeath();
+    }
+
+    public Vector2 getChest() {
+        return new Vector2(position.x + chest.x, position.y + chest.y);
     }
 
     public Vector2 topLeft() {
@@ -103,7 +111,7 @@ public class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
         // Check if this hit killed the player
         if (this.isDead()) {
             p.attacker.addKill();
-            addDeath();
+            onDied();
 
             System.out.println("Player " + this.name + " was killed by " + p.attacker.name);
         }
@@ -129,7 +137,7 @@ public class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
     }
 
     public String scoreboardText() {
-        return name + ": " + kills + " kills, " + deaths + " deaths (" + killDeathRatio() + " K/D)";
+        return name + ": " + kills + " " + Util.pluralizeWord("kill", kills) + ", " + deaths + " " + Util.pluralizeWord("death", deaths) + " (" + killDeathRatio() + " K/D)";
     }
 
     public void giveAmmo(int ammo) {

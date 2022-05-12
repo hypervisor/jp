@@ -25,7 +25,6 @@ public class ControllablePlayer extends BasePlayer {
         this.ammo = 30;
         setPosition(Util.randomPositionInsideZone());
 
-        // NOTE: Respawning breaks colliders or some shit
         System.out.println("Player " + name + " respawned");
 
         World.onRespawn();

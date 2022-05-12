@@ -35,6 +35,12 @@ public class Util {
         return new Vector2((float)randomBetween(25, screenSize.getX() - 25), (float)randomBetween(25, screenSize.getY() - 25));
     }
 
+    public static String pluralizeWord(String word, int count) {
+        if (count == 0 || count > 1)
+            return word + "s";
+        return word;
+    }
+
     public static Vector2 randomPositionInsideZone() {
         Vector2 screenSize = Application.getScreenSize();
         Vector2 zonePos = SafeZone.instance.getZonePosition();

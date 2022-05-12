@@ -47,7 +47,7 @@ public class AutoPlayer extends BasePlayer {
             ammo--;
 
             Vector2 shootPosition = new Vector2(position.x + chest.x, position.y + chest.y);
-            Vector2 shootDirection = Vector2.difference(shootPosition, target.position).getNormalized();
+            Vector2 shootDirection = Vector2.difference(shootPosition, target.getChest()).getNormalized();
 
             // Spawn projectile
             Projectile p = new Projectile(this, shootPosition, shootDirection);
@@ -60,13 +60,28 @@ public class AutoPlayer extends BasePlayer {
     }
 
     @Override
+    public void onDied() {
+        super.onDied();
+
+        // Let there be a 75% chance for the bot to respawn
+        if (Util.randomChance(75)) {
+            // Reset values
+            this.health = 100;
+            this.ammo = 24;
+            setPosition(Util.randomPositionInsideZone());
+
+            System.out.println("Player " + name + " respawned");
+
+            World.onRespawn();
+        }
+    }
+
+    @Override
     public void render(Drawing d) {
         if (isDead())
             return;
 
         super.render(d);
-
-
 
         if (SHOW_DEBUG_INFO)
             d.drawText(new Vector2(0, 25), "Target: " + target.name);
