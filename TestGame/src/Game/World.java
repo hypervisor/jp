@@ -30,4 +30,26 @@ public class World {
     public static void spawnSuperBandage(){
         EntityManager.addEntity(new SuperBandage(Util.randomPosition()));
     }
+
+    public static void onRespawn() {
+        if (Util.randomChance(40)) {
+            EntityManager.addEntity(new Bandage(Util.randomPosition()));
+        }
+
+        if (Util.randomChance(40)) {
+            EntityManager.addEntity(new Ammo(Util.randomPosition()));
+        }
+
+        if (Util.randomChance(40)) {
+            EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+        }
+
+        if (Util.randomChance(60)) {
+            EntityManager.addEntity(new Poison(Util.randomPositionInsideZone()));
+        }
+
+        if (Util.randomChance(15)) {
+            EntityManager.addEntity(new SuperBandage(Util.randomPosition()));
+        }
+    }
 }

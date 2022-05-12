@@ -20,6 +20,10 @@ public class Util {
         return min + r.nextInt(max - min);
     }
 
+    public static boolean randomChance(float chance) {
+        return (float)randomBetween(0, 100) < chance;
+    }
+
     public static Vector2 randomPosition() {
         Random r = new Random();
         Vector2 screenSize = Application.getScreenSize();

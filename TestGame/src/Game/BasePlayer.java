@@ -1,7 +1,7 @@
 package Game;
 
 import Engine.*;
-import Game.*;
+import Killstreaks.FMJAmmo;
 import Killstreaks.GasMask;
 
 import java.awt.*;
@@ -20,8 +20,10 @@ public class BasePlayer extends BaseEntity {
     private Vector2 shootDirection;
     private int kills;
     private int deaths;
+    public int currentStreak;
 
     public GasMask gasMask;
+    public FMJAmmo fmjAmmo;
 
     private float headSize;
     private Vector2 neck;
@@ -43,6 +45,10 @@ public class BasePlayer extends BaseEntity {
         this.position = position;
         this.collider = new BoxCollider(position, new Vector2(50 * playerSize, 165 * playerSize));
         this.gasMask = new GasMask(this);
+        this.fmjAmmo = new FMJAmmo(this);
+        this.kills = 0;
+        this.deaths = 0;
+        this.currentStreak = 0;
 
         headSize = 50 * playerSize;
         neck = new Vector2(headSize / 2, headSize);
@@ -128,12 +134,13 @@ public class BasePlayer extends BaseEntity {
     }
 
     public void addDeath() {
-        gasMask.resetStreak();
+        currentStreak = 0;
+        gasMask.incrementStreak();
         deaths++;
     }
 
     public void addKill() {
-        gasMask.incrementStreak();
+        currentStreak++;
         kills++;
     }
 
@@ -161,6 +168,8 @@ public class BasePlayer extends BaseEntity {
 
         // NOTE: Respawning breaks colliders or some shit
         System.out.println("Player " + name + " respawned");
+
+        World.onRespawn();
     }
 
     @Override

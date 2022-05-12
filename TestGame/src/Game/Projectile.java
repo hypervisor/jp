@@ -24,9 +24,13 @@ public class Projectile extends BaseEntity {
         if (player.equals(attacker))
             return;
 
-        int damage = Util.randomBetween(5, 25);
+        float damage = (float)Util.randomBetween(5, 25);
 
-        // Game.Projectile hit a player!
+        // If attacker has FMJ killstream, increase damage by 15%
+        if (attacker.fmjAmmo.hasKillStreak())
+            damage *= 1.15;
+
+        // Projectile hit a player!
         player.takeDamage(damage);
         System.out.println("Hit player " + player.name + " for " + damage + " (" + player.getHealth() + ")");
 
