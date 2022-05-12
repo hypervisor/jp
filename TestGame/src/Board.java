@@ -27,6 +27,7 @@ public class Board extends JPanel implements ActionListener {
         World.spawnBandages();
         World.spawnAmmo();
         World.spawnPoison();
+        World.spawnSuperBandage();
 
         updateTimer = new Timer(TIMER_DELAY, this);
         updateTimer.start();

@@ -12,7 +12,7 @@ public class Poison extends BaseItem {
 
     @Override
     public boolean onPickup(BasePlayer player) {
-        player.takeDamage(50);
+        player.takeDamage(Util.randomBetween(20,40));
         return true;
     }
 }

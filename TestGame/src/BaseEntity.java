@@ -41,6 +41,6 @@ public abstract class BaseEntity implements GameObject {
     }
 
     public boolean isDead() {
-        return health <= 0;
+        return health < 1;
     }
 }
