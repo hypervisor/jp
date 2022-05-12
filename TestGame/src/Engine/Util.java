@@ -27,12 +27,14 @@ public class Util {
     public static Vector2 randomPosition() {
         Random r = new Random();
         Vector2 screenSize = Application.getScreenSize();
-        return new Vector2((float)r.nextInt(screenSize.getX()), (float) r.nextInt(screenSize.getY()));
+
+        // Add bounds of 25 so items can't spawn at the edge of your screen
+        return new Vector2((float)randomBetween(25, screenSize.getX() - 25), (float)randomBetween(25, screenSize.getY() - 25));
     }
 
     public static Vector2 randomPositionInsideZone() {
         Random r = new Random();
-        Vector2 zonePos = SafeZone.instance.zonePosition();
+        Vector2 zonePos = SafeZone.instance.getZonePosition();
         return new Vector2(zonePos.x + randomBetween(-150, 150), zonePos.x + randomBetween(-150, 150));
     }
 }
