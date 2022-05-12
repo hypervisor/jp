@@ -130,7 +130,7 @@ public class BasePlayer extends BaseEntity {
             this.position.y += speed;
         }
 
-        shootDirection = Vector2.lerp(shootDirection, targetDirection, AIM_SPEED * deltaTime).getNormalized();
+        shootDirection = Vector2.moveTowards(shootDirection, targetDirection, AIM_SPEED * deltaTime).getNormalized();
     }
 
     public void addDeath() {

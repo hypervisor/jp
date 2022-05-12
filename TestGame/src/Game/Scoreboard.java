@@ -6,7 +6,7 @@ import Game.*;
 import java.awt.*;
 
 public class Scoreboard extends BaseEntity {
-    private static final Color SCOREBOARD_BG_COLOR = new Color(200, 200, 255);
+    private static final Color SCOREBOARD_BG_COLOR = new Color(255, 255, 255);
     public static Scoreboard instance;
 
     public Scoreboard() {

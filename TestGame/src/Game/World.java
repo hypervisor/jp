@@ -32,6 +32,8 @@ public class World {
     }
 
     public static void onRespawn() {
+        SafeZone.instance.onRespawn();
+
         if (Util.randomChance(40)) {
             EntityManager.addEntity(new Bandage(Util.randomPosition()));
         }

@@ -5,9 +5,11 @@ import Engine.*;
 import java.awt.*;
 
 public class SafeZone extends BaseEntity {
-    public static boolean ZONE_DEBUG = true;
-    public static final float ZONE_SPEED = 10;
-    public static final float ZONE_FINAL_RADIUS = 50;
+    public static boolean ZONE_DEBUG = false;
+    public static final float ZONE_MOVE_SPEED = 10;
+    public static final float ZONE_SCALE_SPEED = 5;
+    public static final float ZONE_START_RADIUS = 500;
+    public static final float ZONE_FINAL_RADIUS = 100;
     public static final Color ZONE_COLOR = new Color(200, 200, 255);
 
     public static SafeZone instance;
@@ -20,7 +22,7 @@ public class SafeZone extends BaseEntity {
     public SafeZone() {
         position = Vector2.zero();
         zoneTarget = Util.randomPosition();
-        zoneRadius = 300;
+        zoneRadius = ZONE_START_RADIUS;
         instance = this;
 
         Vector2 screenSize = Application.getScreenSize();
@@ -47,6 +49,11 @@ public class SafeZone extends BaseEntity {
         return Vector2.distance(zonePosition, p) < zoneRadius;
     }
 
+    public void onRespawn() {
+        if (zoneRadius <= ZONE_FINAL_RADIUS)
+            zoneRadius = (float)Util.randomBetween((int)ZONE_FINAL_RADIUS, (int)ZONE_START_RADIUS);
+    }
+
     @Override
     public void update(Input i, float deltaTime) {
         for (BasePlayer player : EntityManager.getPlayerList()) {
@@ -70,25 +77,35 @@ public class SafeZone extends BaseEntity {
         }
 
         if (zoneRadius > ZONE_FINAL_RADIUS)
-            zoneRadius -= ZONE_SPEED * deltaTime;
+            zoneRadius -= ZONE_SCALE_SPEED * deltaTime;
 
-        zonePosition = Vector2.lerp(initialZonePosition, zoneTarget, ZONE_SPEED * deltaTime);
+        // Move towards zone target
+        zonePosition = Vector2.moveTowards(zonePosition, zoneTarget, ZONE_MOVE_SPEED * deltaTime);
+
+        // If we reached zone target, move to new location
+        if (zonePosition.equals(zoneTarget)) {
+            zoneTarget = Util.randomPosition();
+        }
     }
 
     @Override
     public void render(Drawing d) {
-        d.fillCircle(getZoneDrawPosition(), getZoneDiameter(), ZONE_COLOR);
-        d.drawCircle(getZoneDrawPosition(), getZoneDiameter(), Color.BLUE);
+        Vector2 drawPos = getZoneDrawPosition();
+        d.fillCircle(drawPos, getZoneDiameter(), ZONE_COLOR);
+        d.drawCircle(drawPos, getZoneDiameter(), Color.BLUE);
 
         if (ZONE_DEBUG) {
             d.fillRect(zonePosition, new Vector2(50, 50), Color.RED);
             d.drawLine(Vector2.zero(), zonePosition, Color.RED);
+            d.drawText(zonePosition, "Actual SafeZone position");
 
-            d.fillRect(getZoneDrawPosition(), new Vector2(50, 50), Color.BLUE);
+            d.fillRect(drawPos, new Vector2(50, 50), Color.BLUE);
             d.drawLine(Vector2.zero(), getZoneDrawPosition(), Color.BLUE);
+            d.drawText(drawPos, "SafeZone draw position");
 
             d.fillRect(zoneTarget, new Vector2(50, 50), Color.YELLOW);
             d.drawLine(Vector2.zero(), zoneTarget, Color.YELLOW);
+            d.drawText(zoneTarget, "Target SafeZone position");
         }
     }
 }
