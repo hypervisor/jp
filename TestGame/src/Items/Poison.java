@@ -10,9 +10,7 @@ public class Poison extends BaseItem {
     public static final int MAX_AMOUNT = 5;
 
     public Poison(Vector2 position) {
-        this.displayText = "Poison";
-        this.displayColor = Color.GREEN;
-        this.position = position;
+        super(position, "Poison", Color.GREEN);
     }
 
     @Override

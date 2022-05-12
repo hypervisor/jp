@@ -9,10 +9,7 @@ import java.awt.*;
 public class LandMine extends BaseItem {
 
     public LandMine(Vector2 position) {
-        this.displayText = "Landmine";
-        this.displayColor = Color.BLACK;
-        this.position = position;
-
+        super(position, "Landmine", Color.BLACK);
     }
     @Override
     public boolean onPickup(BasePlayer player) {

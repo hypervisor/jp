@@ -84,6 +84,35 @@ public class BasePlayer extends BaseEntity {
         return ammo == 0;
     }
 
+    public boolean canHeal() {
+        return health < 100f;
+    }
+
+    @Override
+    public boolean onProjectileHit(Projectile p) {
+        // We shouldn't be able to hit ourselves!
+        if (this.equals(p.attacker))
+            return false;
+
+        float damage = (float)Util.randomBetween(5, 25);
+
+        // If attacker has FMJ killstream, increase damage by 15%
+        if (p.attacker.fmjAmmo.hasKillStreak())
+            damage *= 1.15;
+
+        // Projectile hit a player!
+        this.takeDamage(damage);
+        System.out.println("Hit player " + this.name + " for " + damage + " (" + this.getHealth() + ")");
+
+        // Check if this hit killed the player
+        if (this.isDead()) {
+            p.attacker.addKill();
+
+            System.out.println("Player " + this.name + " was killed by " + p.attacker.name);
+        }
+        return true;
+    }
+
     private void handleShotFired() {
         ammo--;
 

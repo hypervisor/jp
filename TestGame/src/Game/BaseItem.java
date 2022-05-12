@@ -9,6 +9,12 @@ public abstract class BaseItem extends BaseEntity {
     public String displayText;
     public Color displayColor;
 
+    public BaseItem(Vector2 position, String displayText, Color displayColor) {
+        this.position = position;
+        this.displayText = displayText;
+        this.displayColor = displayColor;
+    }
+
     // Returns true if item was picked up
     public abstract boolean onPickup(BasePlayer player);
 
@@ -33,5 +39,8 @@ public abstract class BaseItem extends BaseEntity {
     public void render(Drawing d) {
         d.fillCircle(Vector2.zero(), 25, displayColor);
         d.drawText(Vector2.zero(), displayText);
+        if (this.collider != null) {
+            d.drawRect(Vector2.zero(), ((BoxCollider)this.collider).size);
+        }
     }
 }

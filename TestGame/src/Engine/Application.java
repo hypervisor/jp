@@ -11,6 +11,8 @@ public class Application extends JFrame {
         return new Vector2(SCREEN_W, SCREEN_H);
     }
 
+    public static float time;
+
     public Application() {
         add(new Board());
         setSize(SCREEN_W, SCREEN_H);
@@ -18,6 +20,7 @@ public class Application extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        time = 0f;
     }
 
     public static void main(String[] args) {

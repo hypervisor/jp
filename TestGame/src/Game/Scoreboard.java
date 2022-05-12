@@ -23,13 +23,15 @@ public class Scoreboard extends BaseEntity {
     public void render(Drawing d) {
         var players = EntityManager.getPlayerList();
 
-        d.fillRect(new Vector2(-25, -25), new Vector2(300, 25 + players.size() * 25), SCOREBOARD_BG_COLOR);
-        d.drawRect(new Vector2(-25, -25), new Vector2(300, 25 + players.size() * 25));
+        d.fillRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25), SCOREBOARD_BG_COLOR);
+        d.drawRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25));
 
         int offset = 0;
         for (BasePlayer player : players) {
             d.drawText(new Vector2(0, offset), player.scoreboardText());
             offset += 25;
         }
+
+        d.drawText(new Vector2(0, offset), "Time: " + Application.time);
     }
 }

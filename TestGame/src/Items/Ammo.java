@@ -10,9 +10,7 @@ public class Ammo extends BaseItem {
     public static final int MAX_AMOUNT = 8;
 
     public Ammo(Vector2 position) {
-        this.displayText = "Ammo";
-        this.displayColor = Color.darkGray;
-        this.position = position;
+        super(position, "Ammo", Color.darkGray);
     }
 
     @Override

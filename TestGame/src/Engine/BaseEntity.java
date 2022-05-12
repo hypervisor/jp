@@ -1,5 +1,7 @@
 package Engine;
 
+import Game.Projectile;
+
 public abstract class BaseEntity implements GameObject {
     public Vector2 position;
     protected float health;
@@ -12,6 +14,18 @@ public abstract class BaseEntity implements GameObject {
     public void setPosition(Vector2 position) {
         this.position.x = position.x;
         this.position.y = position.y;
+    }
+
+    public boolean checkCollision(Vector2 p) {
+        if (collider == null)
+            return false;
+
+        return collider.isInsideCollider(p);
+    }
+
+    public boolean onProjectileHit(Projectile p) {
+        // Do nothing by default, return false to indicate that we don't care about the hit.
+        return false;
     }
 
     public float getHealth() {

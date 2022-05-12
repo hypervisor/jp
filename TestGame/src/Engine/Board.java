@@ -61,5 +61,8 @@ public class Board extends JPanel implements ActionListener {
 
         // Update keyboard
         input.newFrame();
+
+        // Update time, this isn't entirely accurate due to delay from the code above.
+        Application.time += DELTA_TIME;
     }
 }

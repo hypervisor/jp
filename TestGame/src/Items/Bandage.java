@@ -11,15 +11,13 @@ public class Bandage extends BaseItem {
     public static final int MAX_AMOUNT = 8;
 
     public Bandage(Vector2 position) {
-        this.displayText = "Bandage";
-        this.displayColor = Color.RED;
-        this.position = position;
+        super(position, "Bandage", Color.RED);
     }
 
     @Override
     public boolean onPickup(BasePlayer player) {
         // Can't pick up bandage if player is not hurt
-        if (player.getHealth() > 99)
+        if (!player.canHeal())
             return false;
 
         player.giveHealth(Util.randomBetween(10, 50));

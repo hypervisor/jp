@@ -11,6 +11,7 @@ public class World {
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
 
+        World.spawnBarrels();
         World.spawnBandages();
         World.spawnAmmo();
         World.spawnPoison();
@@ -18,6 +19,12 @@ public class World {
         World.spawnLandMine();
 
         EntityManager.addEntity(new Scoreboard());
+    }
+
+    public static void spawnBarrels() {
+        for (int i = 0; i < Util.randomBetween(Barrel.MIN_AMOUNT, Barrel.MAX_AMOUNT); i++) {
+            EntityManager.addEntity(new Barrel(Util.randomPosition()));
+        }
     }
 
     public static void spawnBandages() {
@@ -48,6 +55,10 @@ public class World {
 
     public static void onRespawn() {
         SafeZone.instance.onRespawn();
+
+        if (Util.randomChance(15)) {
+            EntityManager.addEntity(new Barrel(Util.randomPositionInsideZone()));
+        }
 
         if (Util.randomChance(40)) {
             EntityManager.addEntity(new Bandage(Util.randomPosition()));
