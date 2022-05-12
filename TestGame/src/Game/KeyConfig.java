@@ -1,3 +1,5 @@
+package Game;
+
 public class KeyConfig {
     public int moveLeft;
     public int moveRight;

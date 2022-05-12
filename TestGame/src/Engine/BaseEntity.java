@@ -1,5 +1,7 @@
+package Engine;
+
 public abstract class BaseEntity implements GameObject {
-    protected Vector2 position;
+    public Vector2 position;
     protected float health;
     protected ICollider collider;
 

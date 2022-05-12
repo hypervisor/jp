@@ -1,7 +1,11 @@
-import javax.swing.*;
+package Game;
+
+import Engine.*;
+import Game.*;
+import Killstreaks.GasMask;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 public class BasePlayer extends BaseEntity {
     private static final float MOVEMENT_SPEED = 200;
@@ -16,6 +20,8 @@ public class BasePlayer extends BaseEntity {
     private Vector2 shootDirection;
     private int kills;
     private int deaths;
+
+    public GasMask gasMask;
 
     private float headSize;
     private Vector2 neck;
@@ -36,6 +42,7 @@ public class BasePlayer extends BaseEntity {
         this.shootDirection = new Vector2(0, 0);
         this.position = position;
         this.collider = new BoxCollider(position, new Vector2(50 * playerSize, 165 * playerSize));
+        this.gasMask = new GasMask();
 
         headSize = 50 * playerSize;
         neck = new Vector2(headSize / 2, headSize);

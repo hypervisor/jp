@@ -1,3 +1,8 @@
+package Game;
+
+import Engine.*;
+import Game.*;
+
 import java.awt.*;
 
 public class Scoreboard extends BaseEntity {

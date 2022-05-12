@@ -1,3 +1,8 @@
+package Game;
+
+import Engine.*;
+import Game.*;
+
 import java.awt.*;
 
 public abstract class BaseItem extends BaseEntity {
@@ -14,7 +19,7 @@ public abstract class BaseItem extends BaseEntity {
             if (player.isDead())
                 continue;
 
-            if (player.collider.isInsideCollider(this.position)) {
+            if (player.getCollider().isInsideCollider(this.position)) {
                 if (onPickup(player)) {
                     // If item was picked up, delete it.
                     EntityManager.removeEntity(this);

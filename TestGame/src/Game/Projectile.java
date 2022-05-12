@@ -1,5 +1,9 @@
+package Game;
+
+import Engine.*;
+import Game.*;
+
 import java.awt.*;
-import java.util.Random;
 
 public class Projectile extends BaseEntity {
     private static final float PROJECTILE_SPEED = 300;
@@ -22,9 +26,9 @@ public class Projectile extends BaseEntity {
 
         int damage = Util.randomBetween(5, 25);
 
-        // Projectile hit a player!
+        // Game.Projectile hit a player!
         player.takeDamage(damage);
-        System.out.println("Hit player " + player.name + " for " + damage + " (" + player.health + ")");
+        System.out.println("Hit player " + player.name + " for " + damage + " (" + player.getHealth() + ")");
 
         // Destroy projectile
         EntityManager.removeEntity(this);
@@ -50,7 +54,7 @@ public class Projectile extends BaseEntity {
             if (player.isDead())
                 continue;
 
-            if (player.collider.isInsideCollider(this.position)) {
+            if (player.getCollider().isInsideCollider(this.position)) {
                 onHit(player);
             }
         }

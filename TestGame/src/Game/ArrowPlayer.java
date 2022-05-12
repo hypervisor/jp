@@ -1,5 +1,10 @@
+package Game;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
+import Engine.*;
+import Game.*;
 
 public class ArrowPlayer extends BasePlayer {
     private static final KeyConfig ARROW_CONFIG = getConfig();

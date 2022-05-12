@@ -1,3 +1,7 @@
+package Game;
+
+import Engine.*;
+
 import java.awt.*;
 
 public class SafeZone extends BaseEntity {
@@ -11,7 +15,7 @@ public class SafeZone extends BaseEntity {
         instance = this;
         Vector2 screenSize = Application.getScreenSize();
         this.position = new Vector2((screenSize.x - ZONE_DIAMETER) / 2, (screenSize.y - ZONE_DIAMETER) / 2);
-        //this.position = new Vector2(150, 150);
+        //this.position = new Engine.Vector2(150, 150);
     }
 
     public Vector2 zonePosition() {
@@ -33,6 +37,10 @@ public class SafeZone extends BaseEntity {
                 // One or more of the player hitbox corners are inside zone, player is good
                 continue;
             }
+
+            // If player has the gas mask killstreak he is immune to gas damage.
+            if (player.gasMask.hasKillStreak())
+                continue;
 
             // Player is outside the zone, fuck him up
             float distance = Vector2.distance(zonePosition(), player.middle());

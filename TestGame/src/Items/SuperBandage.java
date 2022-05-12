@@ -1,6 +1,11 @@
+package Items;
+
 import java.awt.*;
 
-public class SuperBandage extends BaseItem{
+import Engine.*;
+import Game.*;
+
+public class SuperBandage extends BaseItem {
 
     public SuperBandage(Vector2 position) {
         this.displayText = "Super Bandage";
@@ -11,7 +16,7 @@ public class SuperBandage extends BaseItem{
     @Override
     public boolean onPickup(BasePlayer player) {
         // Can't pick up bandage if player is not hurt
-        if (player.health > 99)
+        if (player.getHealth() > 99)
             return false;
 
         player.giveHealth(100);

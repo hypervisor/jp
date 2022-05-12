@@ -1,3 +1,9 @@
+package Engine;
+
+import Engine.BaseEntity;
+import Engine.Input;
+import Game.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

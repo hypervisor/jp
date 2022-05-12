@@ -1,4 +1,8 @@
-import java.util.Random;
+package Game;
+
+import Engine.*;
+import Game.*;
+import Items.*;
 
 public class World {
     public static void spawnBandages() {

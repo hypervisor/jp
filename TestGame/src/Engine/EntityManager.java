@@ -1,3 +1,8 @@
+package Engine;
+
+import Engine.BaseEntity;
+import Game.BasePlayer;
+
 import java.util.ArrayList;
 
 public class EntityManager {

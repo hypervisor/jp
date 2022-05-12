@@ -1,4 +1,9 @@
+package Items;
+
 import java.awt.*;
+
+import Engine.*;
+import Game.*;
 
 public class Poison extends BaseItem {
     public static final int MIN_AMOUNT = 2;

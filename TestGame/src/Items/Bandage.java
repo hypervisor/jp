@@ -1,3 +1,8 @@
+package Items;
+
+import Engine.*;
+import Game.*;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -14,7 +19,7 @@ public class Bandage extends BaseItem {
     @Override
     public boolean onPickup(BasePlayer player) {
         // Can't pick up bandage if player is not hurt
-        if (player.health > 99)
+        if (player.getHealth() > 99)
             return false;
 
         player.giveHealth(Util.randomBetween(10, 50));

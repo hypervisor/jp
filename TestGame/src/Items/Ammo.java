@@ -1,3 +1,8 @@
+package Items;
+
+import Engine.*;
+import Game.*;
+
 import java.awt.*;
 
 public class Ammo extends BaseItem {

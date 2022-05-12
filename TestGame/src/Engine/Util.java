@@ -1,3 +1,8 @@
+package Engine;
+
+import Engine.Application;
+import Game.SafeZone;
+
 import java.awt.*;
 import java.util.Random;
 

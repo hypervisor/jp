@@ -1,3 +1,9 @@
+package Game;
+
+import Engine.*;
+import Game.BasePlayer;
+import Game.KeyConfig;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
