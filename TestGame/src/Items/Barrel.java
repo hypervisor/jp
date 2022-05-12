@@ -3,6 +3,7 @@ package Items;
 import Engine.*;
 import Game.BaseItem;
 import Game.BasePlayer;
+import Game.Explosion;
 import Game.Projectile;
 
 import javax.swing.*;
@@ -27,21 +28,7 @@ public class Barrel extends BaseItem {
         // Remove the entity
         EntityManager.removeEntity(this);
 
-        // Explode - just do damage to everyone around us within a certain distance
-        for (BasePlayer player : EntityManager.getPlayerList()) {
-            if (player.isDead())
-                continue;
-
-            float distance = Vector2.distance(position, player.getPosition());
-            if (distance > EXPLOSION_DISTANCE)
-                continue;
-
-            // Inverse of distance in range [0, distance] converted to a percentage
-            float damage = ((EXPLOSION_DISTANCE - distance) / EXPLOSION_DISTANCE) * 100 * EXPLOSION_DAMAGE_MULTIPLIER;
-
-            player.takeDamage(damage);
-            System.out.println("Barrel explosion caused " + damage + " damage to " + player.name);
-        }
+        Explosion.triggerExplosion(position, EXPLOSION_DISTANCE, EXPLOSION_DAMAGE_MULTIPLIER);
 
         // Register the hit
         return true;

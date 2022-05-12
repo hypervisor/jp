@@ -47,6 +47,11 @@ public class World {
 
     public static void spawnLandMine() {
         EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+        EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+        EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+        EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+        EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
+
     }
 
     public static void spawnSuperBandage(){

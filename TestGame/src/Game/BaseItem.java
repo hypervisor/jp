@@ -6,6 +6,8 @@ import Game.*;
 import java.awt.*;
 
 public abstract class BaseItem extends BaseEntity {
+    public static final boolean DEBUG_COLLIDERS = false;
+
     public String displayText;
     public Color displayColor;
 
@@ -39,7 +41,7 @@ public abstract class BaseItem extends BaseEntity {
     public void render(Drawing d) {
         d.fillCircle(Vector2.zero(), 25, displayColor);
         d.drawText(Vector2.zero(), displayText);
-        if (this.collider != null) {
+        if (DEBUG_COLLIDERS && this.collider != null) {
             d.drawRect(Vector2.zero(), ((BoxCollider)this.collider).size);
         }
     }

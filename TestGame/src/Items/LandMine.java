@@ -3,6 +3,7 @@ package Items;
 import Engine.Vector2;
 import Game.BaseItem;
 import Game.BasePlayer;
+import Game.Explosion;
 
 import java.awt.*;
 
@@ -13,8 +14,9 @@ public class LandMine extends BaseItem {
     }
     @Override
     public boolean onPickup(BasePlayer player) {
-        player.takeDamage(100);
         System.out.println("Player " + player.name + " stepped on a landmine");
+
+        Explosion.triggerExplosion(position, 100, 10);
         return true;
     }
 }

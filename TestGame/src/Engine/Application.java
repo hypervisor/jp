@@ -19,7 +19,7 @@ public class Application extends JFrame {
         setTitle("Call of Duty: Black Ops V");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         time = 0f;
     }
 

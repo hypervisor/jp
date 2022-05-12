@@ -33,6 +33,9 @@ public class SafeZone extends BaseEntity {
     public Vector2 getZonePosition() {
         return zonePosition;
     }
+    public float getZoneRadius() {
+        return zoneRadius;
+    }
 
     private Vector2 getZoneDrawPosition() {
         return new Vector2(zonePosition.x - zoneRadius, zonePosition.y - zoneRadius);

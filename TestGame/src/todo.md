@@ -8,17 +8,12 @@
 - Textures?
 - Bots / zombies?
 - Weapon system (semi/full-automatic guns, firerate, damage, FMJ bullets (does little damage through walls))
-- Add ``Time.time``; en variabel som sier hvor lenge spillet har kjørt  
-Brukes for "timers" osv.
 - Timer for projectile death
 - Projectile damage dropoff
 
 ## Cleanup
 
-- Sort classes into folders/packages
 - OOP everything
-- Make Engine.Board.java simpler and use Game.World.java more
-- Create ``World.setup()`` method
 
 ## Multiplayer
 
