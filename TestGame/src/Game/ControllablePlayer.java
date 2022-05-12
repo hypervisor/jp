@@ -24,7 +24,6 @@ public class ControllablePlayer extends BasePlayer {
         this.health = 100;
         this.ammo = 30;
         setPosition(Util.randomPositionInsideZone());
-        addDeath(); // TODO: Make a onDeath() method called from takeDamage if isDead() and addDeath() there instead.
 
         // NOTE: Respawning breaks colliders or some shit
         System.out.println("Player " + name + " respawned");

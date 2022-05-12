@@ -7,8 +7,8 @@ import Killstreaks.GasMask;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class BasePlayer extends BaseEntity {
-    private static final boolean DEBUG_MODE = true;
+public class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
+    private static final boolean DEBUG_MODE = false;
 
     public String name;
     protected float playerSize;
@@ -35,7 +35,7 @@ public class BasePlayer extends BaseEntity {
         this.name = name;
         this.health = 100f;
         this.playerSize = 0.5f;
-        this.ammo = 20;
+        this.ammo = 24;
         this.skinColor = skinColor;
         this.shootDirection = new Vector2(0, 0);
         this.position = position;
@@ -103,6 +103,7 @@ public class BasePlayer extends BaseEntity {
         // Check if this hit killed the player
         if (this.isDead()) {
             p.attacker.addKill();
+            addDeath();
 
             System.out.println("Player " + this.name + " was killed by " + p.attacker.name);
         }
@@ -159,5 +160,12 @@ public class BasePlayer extends BaseEntity {
                 d.drawRect(Vector2.zero(), ((BoxCollider)this.collider).size, Color.RED);
             }
         }
+    }
+
+    @Override
+    public int compareTo(BasePlayer o) {
+        if (killDeathRatio() == o.killDeathRatio())
+            return 0;
+        return killDeathRatio() > o.killDeathRatio() ? -1 : 1;
     }
 }

@@ -4,6 +4,7 @@ import Engine.*;
 import Game.*;
 
 import java.awt.*;
+import java.util.Collections;
 
 public class Scoreboard extends BaseEntity {
     private static final Color SCOREBOARD_BG_COLOR = new Color(255, 255, 255);
@@ -22,8 +23,9 @@ public class Scoreboard extends BaseEntity {
     @Override
     public void render(Drawing d) {
         var players = EntityManager.getPlayerList();
+        Collections.sort(players);
 
-        d.fillRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25), SCOREBOARD_BG_COLOR);
+        //d.fillRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25), SCOREBOARD_BG_COLOR);
         d.drawRect(new Vector2(-25, -25), new Vector2(300, 50 + players.size() * 25));
 
         int offset = 0;

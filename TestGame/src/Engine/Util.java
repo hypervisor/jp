@@ -7,8 +7,9 @@ import java.awt.*;
 import java.util.Random;
 
 public class Util {
+    private static Random rand = new Random();
+
     public static Color randomColor() {
-        Random rand = new Random();
         int r = rand.nextInt(255);
         int g = rand.nextInt(255);
         int b = rand.nextInt(255);
@@ -16,8 +17,11 @@ public class Util {
     }
 
     public static int randomBetween(int min, int max) {
-        Random r = new Random();
-        return min + r.nextInt(max - min);
+        return min + rand.nextInt(max - min);
+    }
+
+    public static float randomBetween(float min, float max) {
+        return min + (rand.nextFloat() * (max - min));
     }
 
     public static boolean randomChance(float chance) {
@@ -25,7 +29,6 @@ public class Util {
     }
 
     public static Vector2 randomPosition() {
-        Random r = new Random();
         Vector2 screenSize = Application.getScreenSize();
 
         // Add bounds of 25 so items can't spawn at the edge of your screen
