@@ -87,7 +87,7 @@ public class ControllablePlayer extends BasePlayer {
         if (isDead()) {
             if (i.getKeyDown(KeyEvent.VK_R)) {
                 respawn();
-                World.spawnBots(5);
+                World.spawnBots(Util.randomBetween(2, 6));
             } else {
                 return;
             }

@@ -63,7 +63,6 @@ public class Vector2 {
     }
 
     public Vector2 getNormalized() {
-        //float length = x * x + y * y;
         float length = magnitude();
         if (length == 0f)
             return zero();
@@ -72,7 +71,7 @@ public class Vector2 {
     }
 
     public void normalize() {
-        float length = x * x + y * y;
+        float length = magnitude();
         if (length == 0f)
             return;
 

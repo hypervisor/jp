@@ -10,7 +10,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-        spawnBots(10);
+        spawnBots(25);
 
         World.spawnBarrels();
         World.spawnBandages();
@@ -74,14 +74,16 @@ public class World {
     public static void onRespawn() {
         SafeZone.instance.onRespawn();
 
-        EntityManager.addEntity(new Ammo(Util.randomPosition()));
-        EntityManager.addEntity(new Bandage(Util.randomPosition()));
+        if (Util.randomChance(50)) {
+            EntityManager.addEntity(new Ammo(Util.randomPosition()));
+            EntityManager.addEntity(new Bandage(Util.randomPosition()));
+        }
 
         if (Util.randomChance(15)) {
             EntityManager.addEntity(new Barrel(Util.randomPositionInsideZone()));
         }
 
-        if (Util.randomChance(40)) {
+        if (Util.randomChance(30)) {
             EntityManager.addEntity(new LandMine(Util.randomPositionInsideZone()));
         }
 
