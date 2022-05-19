@@ -5,7 +5,7 @@ import Engine.*;
 import java.awt.*;
 
 public class Projectile extends BaseEntity {
-    private static final float PROJECTILE_SPEED = 450;
+    private static final float PROJECTILE_SPEED = 750;
     private static final float PROJECTILE_LIFETIME = 3.5f;
 
     public Vector2 direction;

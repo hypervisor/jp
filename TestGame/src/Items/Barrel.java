@@ -23,12 +23,16 @@ public class Barrel extends BaseItem {
         this.health = 100f;
     }
 
+    public void explodeBarrel() {
+        Explosion.triggerExplosion(position, EXPLOSION_DISTANCE, EXPLOSION_DAMAGE_MULTIPLIER, this);
+    }
+
     @Override
     public boolean onProjectileHit(Projectile p) {
         // Remove the entity
         EntityManager.removeEntity(this);
 
-        Explosion.triggerExplosion(position, EXPLOSION_DISTANCE, EXPLOSION_DAMAGE_MULTIPLIER);
+        explodeBarrel();
 
         // Register the hit
         return true;

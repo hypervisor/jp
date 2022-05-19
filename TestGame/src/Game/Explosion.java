@@ -1,6 +1,8 @@
 package Game;
 
 import Engine.*;
+import Items.Barrel;
+import Items.LandMine;
 
 import java.awt.*;
 
@@ -21,9 +23,16 @@ public class Explosion extends BaseEntity {
         this.dieTime = Application.time + EXPLOSION_TIME;
     }
 
-    public static void triggerExplosion(Vector2 position, float size, float damageMultiplier) {
+    private static boolean isExplodable(BaseEntity entity) {
+        return entity instanceof Barrel || entity instanceof LandMine;
+    }
+
+    public static void triggerExplosion(Vector2 position, float size, float damageMultiplier, BaseEntity source, BasePlayer toIgnore) {
         // Explode - just do damage to everyone around us within a certain distance
         for (BasePlayer player : EntityManager.getPlayerList()) {
+            if (player == toIgnore)
+                continue;
+
             if (player.isDead())
                 continue;
 
@@ -35,11 +44,37 @@ public class Explosion extends BaseEntity {
             float damage = ((size - distance) / size) * 100 * damageMultiplier;
 
             player.takeDamage(damage);
-            System.out.println("Explosion caused " + damage + " damage to " + player.name);
+            //Application.log("Explosion caused " + damage + " damage to " + player.name);
+        }
+
+        // Trigger explosions to barrels and landmines
+        for (BaseEntity entity : EntityManager.getEntities()) {
+            if (entity == source)
+                continue;
+
+            if (!isExplodable(entity))
+                continue;
+
+            if (Vector2.distance(position, entity.position) > size)
+                continue;
+
+            /*
+            if (entity instanceof Barrel) {
+                ((Barrel)entity).explodeBarrel();
+            } else if (entity instanceof LandMine) {
+                ((LandMine)entity).explodeLandMine();
+            }
+
+            EntityManager.removeEntity(entity);
+             */
         }
 
         // Create Explosion entity for visuals
         EntityManager.addEntity(new Explosion(position, size));
+    }
+
+    public static void triggerExplosion(Vector2 position, float size, float damageMultiplier, BaseEntity source) {
+        triggerExplosion(position, size, damageMultiplier, source, null);
     }
 
     private Vector2 getDrawPosition() {

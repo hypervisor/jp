@@ -2,11 +2,11 @@ package Game;
 
 import Engine.*;
 import Items.Booster;
-import Killstreaks.FMJAmmo;
-import Killstreaks.GasMask;
+import Killstreaks.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public abstract class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
     private static final boolean DEBUG_MODE = false;
@@ -14,7 +14,7 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     public String name;
     protected float playerSize;
     protected int ammo;
-    private Color skinColor;
+    protected Color skinColor;
     protected Vector2 shootDirection;
     protected int kills;
     protected int deaths;
@@ -24,6 +24,11 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
     public GasMask gasMask;
     public FMJAmmo fmjAmmo;
+    public Bomb bomb;
+    public WeakNuke nuke;
+    public Turret turret;
+
+    public ArrayList<AutoTurret> turrets;
 
     public float headSize;
     public Vector2 neck;
@@ -45,9 +50,13 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
         this.collider = new BoxCollider(position, new Vector2(50 * playerSize, 165 * playerSize));
         this.gasMask = new GasMask(this);
         this.fmjAmmo = new FMJAmmo(this);
+        this.bomb = new Bomb(this);
+        this.nuke = new WeakNuke(this);
+        this.turret = new Turret(this);
         this.kills = 0;
         this.deaths = 0;
         this.currentStreak = 0;
+        this.turrets = new ArrayList<>();
 
         headSize = 50 * playerSize;
         neck = new Vector2(headSize / 2, headSize);
@@ -60,6 +69,11 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     }
 
     public void onDied() {
+        for (AutoTurret t : turrets) {
+            EntityManager.removeEntity(t);
+        }
+        turrets.clear();
+
         addDeath();
     }
 
@@ -108,32 +122,36 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
         float damage = (float)Util.randomBetween(5, 25);
 
-        // If attacker has FMJ killstream, increase damage by 15%
+        // If attacker has FMJ killstream, increase damage by 100%
         if (p.attacker.fmjAmmo.hasKillStreak())
-            damage *= 1.15;
+            damage *= 2;
 
         // Projectile hit a player!
         this.takeDamage(damage);
-        System.out.println("Hit player " + this.name + " for " + damage + " (" + this.getHealth() + ")");
+        //Application.log("Hit player " + this.name + " for " + damage + " (" + this.getHealth() + ")");
 
         // Check if this hit killed the player
         if (this.isDead()) {
             p.attacker.addKill();
             onDied();
 
-            System.out.println("Player " + this.name + " was killed by " + p.attacker.name);
+            Application.log("Player " + this.name + " was killed by " + p.attacker.name);
         }
         return true;
     }
 
     public void addDeath() {
         currentStreak = 0;
-        gasMask.incrementStreak();
         deaths++;
     }
 
     public void addKill() {
         currentStreak++;
+        gasMask.incrementStreak();
+        fmjAmmo.incrementStreak();
+        bomb.incrementStreak();
+        nuke.incrementStreak();
+        turret.incrementStreak();
         kills++;
     }
 

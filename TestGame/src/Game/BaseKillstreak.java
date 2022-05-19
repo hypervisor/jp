@@ -2,7 +2,7 @@ package Game;
 
 public abstract class BaseKillstreak {
     private int killsRequired;
-    private BasePlayer player;
+    protected BasePlayer player;
 
     public BaseKillstreak(int killsRequired, BasePlayer player) {
         this.killsRequired = killsRequired;

@@ -25,7 +25,7 @@ public class Util {
     }
 
     public static boolean randomChance(float chance) {
-        return (float)randomBetween(0, 100) < chance;
+        return randomBetween(0f, 100f) < chance;
     }
 
     public static Vector2 randomPosition() {
@@ -54,11 +54,13 @@ public class Util {
 
         // Make sure position doesn't go outside screen
 
+        /*
         rx = Math.min(rx, screenSize.getX() - 50);
         ry = Math.min(ry, screenSize.getY() - 100);
 
         rx = Math.max(rx, 25);
         ry = Math.max(ry, 100);
+         */
 
         return new Vector2(rx, ry);
     }

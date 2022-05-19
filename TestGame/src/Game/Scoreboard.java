@@ -22,6 +22,8 @@ public class Scoreboard extends BaseEntity {
 
     @Override
     public void render(Drawing d) {
+        d.setCameraRelative(false);
+
         var players = EntityManager.getPlayerList();
         Collections.sort(players);
 
@@ -30,10 +32,15 @@ public class Scoreboard extends BaseEntity {
 
         int offset = 0;
         for (BasePlayer player : players) {
+            if (player.isDead())
+                continue;
+
             d.drawText(new Vector2(0, offset), player.scoreboardText());
             offset += 25;
         }
 
         d.drawText(new Vector2(0, offset), "Time: " + Application.time);
+
+        d.setCameraRelative(true);
     }
 }

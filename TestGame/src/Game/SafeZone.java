@@ -8,8 +8,8 @@ public class SafeZone extends BaseEntity {
     public static boolean ZONE_DEBUG = false;
     public static final float ZONE_MOVE_SPEED = 10;
     public static final float ZONE_SCALE_SPEED = 5;
-    public static final float ZONE_START_RADIUS = 500;
-    public static final float ZONE_FINAL_RADIUS = 100;
+    public static final float ZONE_START_RADIUS = 1500;
+    public static final float ZONE_FINAL_RADIUS = 650;
     public static final Color ZONE_COLOR = new Color(200, 200, 255);
 
     public static SafeZone instance;
@@ -45,7 +45,7 @@ public class SafeZone extends BaseEntity {
         return zoneRadius * 2;
     }
 
-    private boolean inZone(Vector2 p) {
+    public boolean inZone(Vector2 p) {
         return Vector2.distance(zonePosition, p) < zoneRadius;
     }
 

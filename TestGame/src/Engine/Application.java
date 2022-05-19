@@ -1,19 +1,28 @@
 package Engine;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.JFrame;
 
 public class Application extends JFrame {
-    public static final int SCREEN_W = 800;
-    public static final int SCREEN_H = 800;
+    private static boolean ENABLE_LOGS = false;
+    public static final int SCREEN_W = 1600;
+    public static final int SCREEN_H = 1200;
+
+    private static Application instance;
 
     public static Vector2 getScreenSize() {
         return new Vector2(SCREEN_W, SCREEN_H);
+    }
+    public static Vector2 getCursorPosition() {
+        Point p = MouseInfo.getPointerInfo().getLocation();
+        Point s = instance.getLocation();
+        return new Vector2(p.x - s.x, p.y - s.y);
     }
 
     public static float time;
 
     public Application() {
+        instance = this;
         add(new Board());
         setSize(SCREEN_W, SCREEN_H);
         setTitle("Call of Duty: Black Ops V");
@@ -28,5 +37,11 @@ public class Application extends JFrame {
             Application ex = new Application();
             ex.setVisible(true);
         });
+    }
+
+    public static void log(String x) {
+        if (ENABLE_LOGS) {
+            System.out.println(x);
+        }
     }
 }

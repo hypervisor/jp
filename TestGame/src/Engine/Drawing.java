@@ -5,14 +5,24 @@ import java.awt.*;
 public class Drawing {
     private Graphics g;
     private Vector2 base;
+    private boolean cameraRelative;
 
     public Drawing(Graphics g, Vector2 base) {
         this.g = g;
         this.base = base;
+        this.cameraRelative = true;
+    }
+
+    public void setCameraRelative(boolean r) {
+        cameraRelative = r;
     }
 
     private Vector2 makeRelative(Vector2 p) {
-        return new Vector2(base.x + p.x, base.y + p.y);
+        Vector2 relativePosition = new Vector2(base.x + p.x, base.y + p.y);
+        if (cameraRelative)
+            return Camera.offsetPosition(relativePosition);
+        else
+            return relativePosition;
     }
 
     public void drawLine(Vector2 a, Vector2 b, Color c) {

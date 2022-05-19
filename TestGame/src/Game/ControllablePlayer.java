@@ -1,9 +1,6 @@
 package Game;
 
-import Engine.EntityManager;
-import Engine.Input;
-import Engine.Util;
-import Engine.Vector2;
+import Engine.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,7 +22,7 @@ public class ControllablePlayer extends BasePlayer {
         this.ammo = 30;
         setPosition(Util.randomPositionInsideZone());
 
-        System.out.println("Player " + name + " respawned");
+        Application.log("Player " + name + " respawned");
 
         World.onRespawn();
     }
@@ -40,11 +37,13 @@ public class ControllablePlayer extends BasePlayer {
             //this.shootDirection.x = -1;
             targetDirection.x = -1;
             this.position.x -= speed;
+            //Camera.cameraPosition.x -= speed;
         }
         if (i.getKey(keys.moveRight)) {
             //this.shootDirection.x = 1;
             targetDirection.x = 1;
             this.position.x += speed;
+            //Camera.cameraPosition.x += speed;
         }
 
         // Handle vertical movement
@@ -52,14 +51,21 @@ public class ControllablePlayer extends BasePlayer {
             //this.shootDirection.y = -1;
             targetDirection.y = -1;
             this.position.y -= speed;
+            //Camera.cameraPosition.y -= speed;
         }
         if (i.getKey(keys.moveDown)) {
             //this.shootDirection.y = 1;
             targetDirection.y = 1;
             this.position.y += speed;
+            //Camera.cameraPosition.y += speed;
         }
 
-        shootDirection = Vector2.moveTowards(shootDirection, targetDirection, AIM_SPEED * deltaTime).getNormalized();
+        Camera.focusOn(middle());
+
+        Vector2 p = Application.getCursorPosition();
+        shootDirection = Vector2.difference(Camera.offsetPosition(getChest()), p).getNormalized();
+        //shootDirection = Vector2.moveTowards(shootDirection, p, AIM_SPEED * deltaTime).getNormalized();
+        //shootDirection = new Vector2(1, 1);
     }
 
     private void handleShotFired() {
@@ -87,7 +93,6 @@ public class ControllablePlayer extends BasePlayer {
         if (isDead()) {
             if (i.getKeyDown(KeyEvent.VK_R)) {
                 respawn();
-                World.spawnBots(Util.randomBetween(2, 6));
             } else {
                 return;
             }
