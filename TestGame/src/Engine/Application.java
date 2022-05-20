@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 
 public class Application extends JFrame {
     private static boolean ENABLE_LOGS = false;
-    public static final int SCREEN_W = 1600;
-    public static final int SCREEN_H = 1200;
+    public static final int SCREEN_W = 1200;
+    public static final int SCREEN_H = 800;
 
     private static Application instance;
 

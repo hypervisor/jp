@@ -13,7 +13,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         //EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-        spawnBots(10);
+        spawnBots(2500);
 
         World.spawnBarrels();
         World.spawnBandages();
