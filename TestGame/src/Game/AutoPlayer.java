@@ -38,7 +38,7 @@ public class AutoPlayer extends BasePlayer {
             birthRate = Util.randomBetween(12f, 75f);
             suicidalChance = Util.randomBetween(0.5f, 50.f);
             isCrazy = Util.randomChance(10);
-            isRacist = Util.randomChance(isCrazy ? 90 : 50);
+            isRacist = Util.randomChance(isCrazy ? 90 : 60);
 
             if (isCrazy) {
                 // Crazy bots are on steroids. Move faster, shoot faster, more racist, etc
