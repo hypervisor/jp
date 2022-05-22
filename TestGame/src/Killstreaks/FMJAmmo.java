@@ -5,7 +5,7 @@ import Game.BasePlayer;
 
 public class FMJAmmo extends BaseKillstreak {
     public FMJAmmo(BasePlayer player) {
-        super(4, player);
+        super(8, player);
     }
 
     @Override

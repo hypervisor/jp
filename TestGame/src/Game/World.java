@@ -13,7 +13,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         //EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-        spawnBots(2500);
+        spawnBots(50);
 
         World.spawnBarrels();
         World.spawnBandages();
@@ -60,6 +60,8 @@ public class World {
         for (int i = 0; i < Util.randomBetween(Bandage.MIN_AMOUNT, Bandage.MAX_AMOUNT); i++) {
             EntityManager.addEntity(new Ammo(Util.randomPosition()));
         }
+
+        EntityManager.addEntity(new SuperAmmo(Util.randomPositionInsideZone()));
     }
 
     public static void spawnPoison() {
@@ -86,7 +88,11 @@ public class World {
         World.spawnBots(Util.randomBetween(1, 3));
 
         for (int i = 0; i < SPAWN_DENSITY; i++) {
-            if (Util.randomChance(70)) {
+            if (Util.randomChance(15)) {
+                EntityManager.addEntity(new SuperAmmo(Util.randomPositionInsideZone()));
+            }
+
+            if (Util.randomChance(60)) {
                 EntityManager.addEntity(new Ammo(Util.randomPosition()));
                 EntityManager.addEntity(new Bandage(Util.randomPosition()));
             }

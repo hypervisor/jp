@@ -1,48 +1,74 @@
 package Game;
 
 import Engine.*;
+import Killstreaks.BulletRain;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class ControllablePlayer extends BasePlayer {
-    private static final float MOVEMENT_SPEED = 200;
+    private static final float MOVEMENT_SPEED = 250;
     private static final float AIM_SPEED = 10;
+    private static final int START_BULLETS = 30;
+    private static final float FIRE_RATE = 0.2f;
+    private static final float MULTISHOOT_FIRERATE = 5f;
 
     protected KeyConfig keys;
+    private float nextMultiShootTime;
+    public float fireRate;
+    private float nextShootTime;
 
     public ControllablePlayer(String name, Vector2 position, KeyConfig keys, Color skinColor) {
         super(name, position, skinColor);
         this.keys = keys;
+        this.ammo = START_BULLETS;
+        this.fireRate = FIRE_RATE;
+        setNextMultiShootTime();
+        setFireTime();
+    }
+
+    private void setFireTime() {
+        this.nextShootTime = Application.time + fireRate;
+    }
+
+    private void setNextMultiShootTime() {
+        nextMultiShootTime = Application.time + MULTISHOOT_FIRERATE;
     }
 
     private void respawn() {
         // Reset values
         this.health = 100;
-        this.ammo = 30;
+        this.ammo = START_BULLETS;
+        this.streaks.resetStreak();
+        this.boosterTime = 0;
+        this.hasBooster = false;
         setPosition(Util.randomPositionInsideZone());
 
         Application.log("Player " + name + " respawned");
 
         World.onRespawn();
+
+        setNextMultiShootTime();
     }
 
     private void handleMovement(Input i, float deltaTime) {
         float speed = MOVEMENT_SPEED * deltaTime;
+        if (streaks.sneakers.hasKillStreak())
+            speed *= 1.25f;
 
-        Vector2 targetDirection = new Vector2(shootDirection.x, shootDirection.y);
+        Vector2 targetDirection = new Vector2(0, 0);
 
         // Handle horizontal movement
         if (i.getKey(keys.moveLeft)) {
             //this.shootDirection.x = -1;
             targetDirection.x = -1;
-            this.position.x -= speed;
+            //this.position.x -= speed;
             //Camera.cameraPosition.x -= speed;
         }
         if (i.getKey(keys.moveRight)) {
             //this.shootDirection.x = 1;
             targetDirection.x = 1;
-            this.position.x += speed;
+            //this.position.x += speed;
             //Camera.cameraPosition.x += speed;
         }
 
@@ -50,22 +76,25 @@ public class ControllablePlayer extends BasePlayer {
         if (i.getKey(keys.moveUp)) {
             //this.shootDirection.y = -1;
             targetDirection.y = -1;
-            this.position.y -= speed;
+            //this.position.y -= speed;
             //Camera.cameraPosition.y -= speed;
         }
         if (i.getKey(keys.moveDown)) {
             //this.shootDirection.y = 1;
             targetDirection.y = 1;
-            this.position.y += speed;
+            //this.position.y += speed;
             //Camera.cameraPosition.y += speed;
         }
+
+        targetDirection.normalize();
+
+        this.position.x += targetDirection.x * speed;
+        this.position.y += targetDirection.y * speed;
 
         Camera.focusOn(middle());
 
         Vector2 p = Application.getCursorPosition();
         shootDirection = Vector2.difference(Camera.offsetPosition(getChest()), p).getNormalized();
-        //shootDirection = Vector2.moveTowards(shootDirection, p, AIM_SPEED * deltaTime).getNormalized();
-        //shootDirection = new Vector2(1, 1);
     }
 
     private void handleShotFired() {
@@ -85,13 +114,55 @@ public class ControllablePlayer extends BasePlayer {
         EntityManager.addEntity(p);
     }
 
+    private void handleMultiShoot() {
+        int toFire = Math.min(ammo, START_BULLETS);
+
+        ammo -= toFire;
+
+        Vector2 shootPosition = new Vector2(position.x + chest.x, position.y + chest.y);
+
+        for (int i = 0; i < toFire; i++) {
+            double angle = Util.randomBetween(0f, 360f);
+
+            Vector2 shootDirection = new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
+
+            // Spawn projectile
+            Projectile p = new Projectile(this, shootPosition, shootDirection);
+
+            // Add projectile to entity list
+            EntityManager.addEntity(p);
+        }
+    }
+
+    private String getBoosterString() {
+        if (!hasBooster)
+            return "none";
+
+        float timeLeft = boosterTime - Application.time;
+        return "" + timeLeft + "s";
+    }
+
+    @Override
+    public void render(Drawing d) {
+        super.render(d);
+
+        d.setPositionRelative(false);
+        d.setCameraRelative(false);
+        d.drawText(new Vector2(25, Application.getScreenSize().y - 150), "Health: " + getHealth());
+        d.drawText(new Vector2(25, Application.getScreenSize().y - 125), "Booster: " + getBoosterString());
+        d.drawText(new Vector2(25, Application.getScreenSize().y - 100), "Streak: " + streaks.currentStreak);
+        d.drawText(new Vector2(25, Application.getScreenSize().y - 75), "Ammo: " + ammo);
+        d.setCameraRelative(true);
+        d.setPositionRelative(true);
+    }
+
     @Override
     public void update(Input i, float deltaTime) {
         super.update(i, deltaTime);
 
         // Don't run game logic if player is dead
         if (isDead()) {
-            if (i.getKeyDown(KeyEvent.VK_R)) {
+            if (i.getKeyDown(keys.respawn)) {
                 respawn();
             } else {
                 return;
@@ -104,6 +175,14 @@ public class ControllablePlayer extends BasePlayer {
         // Handle shooting
         if (i.getKeyDown(keys.shoot) && !isOutOfAmmo()) {
             handleShotFired();
+        } else if (i.getKey(keys.shoot) && !isOutOfAmmo() && Application.time >= nextShootTime) {
+            handleShotFired();
+            setFireTime();
+        }
+
+        if (i.getKeyDown(keys.multiShoot) && !isOutOfAmmo() && Application.time >= nextMultiShootTime) {
+            handleMultiShoot();
+            setNextMultiShootTime();
         }
     }
 }

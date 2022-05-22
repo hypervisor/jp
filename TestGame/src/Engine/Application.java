@@ -11,7 +11,8 @@ public class Application extends JFrame {
     private static Application instance;
 
     public static Vector2 getScreenSize() {
-        return new Vector2(SCREEN_W, SCREEN_H);
+        Dimension size = instance.getSize();
+        return new Vector2(size.width, size.height);
     }
     public static Vector2 getCursorPosition() {
         Point p = MouseInfo.getPointerInfo().getLocation();
@@ -23,8 +24,8 @@ public class Application extends JFrame {
 
     public Application() {
         instance = this;
-        add(new Board());
         setSize(SCREEN_W, SCREEN_H);
+        add(new Board());
         setTitle("Call of Duty: Black Ops V");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

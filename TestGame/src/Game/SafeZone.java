@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class SafeZone extends BaseEntity {
     public static boolean ZONE_DEBUG = false;
-    public static final float ZONE_MOVE_SPEED = 10;
-    public static final float ZONE_SCALE_SPEED = 5;
-    public static final float ZONE_START_RADIUS = 1500;
-    public static final float ZONE_FINAL_RADIUS = 650;
+    public static final float ZONE_MOVE_SPEED = 15;
+    public static final float ZONE_SCALE_SPEED = 10;
+    public static final float ZONE_START_RADIUS = 1200;
+    public static final float ZONE_FINAL_RADIUS = 400;
     public static final Color ZONE_COLOR = new Color(200, 200, 255);
 
     public static SafeZone instance;
@@ -65,15 +65,21 @@ public class SafeZone extends BaseEntity {
                 continue;
             }
 
+            if (player.isDead())
+                continue;
+
             // Player is outside the zone, fuck him up
             float distance = Vector2.distance(zonePosition, player.middle());
             float damage = distance / 100000;
 
             // Gas mask reduces gas damage to 10%
-            if (player.gasMask.hasKillStreak())
+            if (player.streaks.gasMask.hasKillStreak())
                 damage /= 10;
 
             player.takeDamage(damage / deltaTime);
+
+            if (player.isDead())
+                player.onDied();
         }
 
         if (zoneRadius > ZONE_FINAL_RADIUS)

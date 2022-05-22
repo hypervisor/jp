@@ -1,18 +1,19 @@
 package Game;
 
 import Engine.*;
-import Items.LandMine;
 
 import java.awt.*;
 
 public class AutoTurret extends BaseEntity {
     private static final float TURRET_MAX_DISTANCE = 600;
     private static final float TURRET_FIRE_RATE = 0.25f;
+    private static final float TURRET_LIFETIME = 30f;
 
     public BasePlayer owner;
     public BasePlayer target;
     private Vector2 shootDirection;
     private float nextShotTime;
+    private float dieTime;
 
     public AutoTurret(BasePlayer player) {
         this.owner = player;
@@ -20,6 +21,7 @@ public class AutoTurret extends BaseEntity {
         this.health = 100;
 
         nextShotTime = Application.time + TURRET_FIRE_RATE;
+        dieTime = Application.time + TURRET_LIFETIME;
     }
 
     private void updateTarget() {
@@ -58,6 +60,11 @@ public class AutoTurret extends BaseEntity {
             EntityManager.addEntity(p);
 
             nextShotTime = Application.time + TURRET_FIRE_RATE;
+        }
+
+        if (Application.time > dieTime) {
+            owner.turrets.remove(this);
+            EntityManager.removeEntity(this);
         }
     }
 

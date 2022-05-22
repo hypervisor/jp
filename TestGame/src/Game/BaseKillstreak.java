@@ -14,12 +14,12 @@ public abstract class BaseKillstreak {
 
     public void incrementStreak() {
         // Sjekk om vi har fått streaken, og kall onStreakAcquired med en gang vi har.
-        if(player.currentStreak == killsRequired) {
+        if(player.streaks.currentStreak == killsRequired) {
             onStreakAcquired();
         }
     }
     public boolean hasKillStreak() {
         // Om spilleren har denne killstreaken
-        return player.currentStreak >= killsRequired;
+        return player.streaks.currentStreak >= killsRequired;
     }
 }

@@ -1,7 +1,6 @@
 package Game;
 
 import Engine.*;
-import Game.*;
 
 import java.awt.*;
 
@@ -10,11 +9,13 @@ public abstract class BaseItem extends BaseEntity {
 
     public String displayText;
     public Color displayColor;
+    public float dieTime;
 
     public BaseItem(Vector2 position, String displayText, Color displayColor) {
         this.position = position;
         this.displayText = displayText;
         this.displayColor = displayColor;
+        this.dieTime = Application.time + Util.randomBetween(20f, 30f);
     }
 
     // Returns true if item was picked up
@@ -34,6 +35,10 @@ public abstract class BaseItem extends BaseEntity {
                     break;
                 }
             }
+        }
+
+        if (Application.time > dieTime) {
+            EntityManager.removeEntity(this);
         }
     }
 

@@ -5,16 +5,16 @@ import Game.*;
 
 import java.awt.*;
 
-public class Ammo extends BaseItem {
+public class SuperAmmo extends BaseItem {
     public static final int MIN_AMOUNT = 4;
     public static final int MAX_AMOUNT = 8;
 
     private int containingAmmo;
 
-    public Ammo(Vector2 position) {
-        super(position, "Ammo Box", Color.darkGray);
+    public SuperAmmo(Vector2 position) {
+        super(position, "Large Ammo Box", Color.darkGray);
 
-        containingAmmo = Util.randomBetween(12, 25);
+        containingAmmo = Util.randomBetween(40, 60);
     }
 
     @Override

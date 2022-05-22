@@ -44,24 +44,12 @@ public class Util {
     public static Vector2 randomPositionInsideZone() {
         Vector2 screenSize = Application.getScreenSize();
         Vector2 zonePos = SafeZone.instance.getZonePosition();
-        int radius = (int)SafeZone.instance.getZoneRadius();
+        float radius = SafeZone.instance.getZoneRadius();
 
-        int min = -radius;
-        int max = radius;
+        float angle = Util.randomBetween(0f, 360f);
+        float distance = Util.randomBetween(0f, radius);
 
-        int rx = zonePos.getX() + randomBetween(min, max);
-        int ry = zonePos.getY() + randomBetween(min, max);
-
-        // Make sure position doesn't go outside screen
-
-        /*
-        rx = Math.min(rx, screenSize.getX() - 50);
-        ry = Math.min(ry, screenSize.getY() - 100);
-
-        rx = Math.max(rx, 25);
-        ry = Math.max(ry, 100);
-         */
-
-        return new Vector2(rx, ry);
+        Vector2 unitPos = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).scale(distance);
+        return new Vector2(zonePos.x + unitPos.x, zonePos.y + unitPos.y);
     }
 }

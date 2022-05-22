@@ -6,4 +6,6 @@ public class KeyConfig {
     public int moveUp;
     public int moveDown;
     public int shoot;
+    public int multiShoot;
+    public int respawn;
 }

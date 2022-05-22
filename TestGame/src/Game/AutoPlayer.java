@@ -5,7 +5,6 @@ import Items.*;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class AutoPlayer extends BasePlayer {
     private static final boolean SHOW_DEBUG_INFO = false;
@@ -17,6 +16,7 @@ public class AutoPlayer extends BasePlayer {
     private float nextBirthTime;
     private float birthRate;
     private float suicidalChance;
+    private float respawnChance;
     private boolean isCrazy;
     private boolean isRacist;
     private boolean isSuicidal;
@@ -30,13 +30,17 @@ public class AutoPlayer extends BasePlayer {
             fireRate = mutationSource.fireRate * Util.randomBetween(0.9f, 1.1f);
             birthRate = mutationSource.birthRate * Util.randomBetween(0.9f, 1.1f);
             suicidalChance = mutationSource.suicidalChance * Util.randomBetween(0.5f, 1.5f);
+            respawnChance = mutationSource.respawnChance * Util.randomBetween(0.9f, 1.1f);
+            playerSize = mutationSource.playerSize * Util.randomBetween(0.95f, 1.05f);
             isCrazy = Util.randomChance(mutationSource.isCrazy ? 90 : 10);
             isRacist = Util.randomChance(mutationSource.isRacist ? 90 : 10);
         } else {
             movementSpeed = Util.randomBetween(10, 200);
             fireRate = Util.randomBetween(0.1f, 6f);
-            birthRate = Util.randomBetween(12f, 75f);
+            birthRate = Util.randomBetween(12f, 50f);
             suicidalChance = Util.randomBetween(0.5f, 50.f);
+            respawnChance = Util.randomBetween(5f, 75.f);
+            playerSize = Util.randomBetween(0.65f, 1.5f);
             isCrazy = Util.randomChance(10);
             isRacist = Util.randomChance(isCrazy ? 90 : 60);
 
@@ -45,6 +49,8 @@ public class AutoPlayer extends BasePlayer {
                 movementSpeed *= 1.5f;
                 fireRate *= 1.5f;
                 birthRate *= 0.85f;
+                // Crazy bots however don't respawn as easily
+                respawnChance *= 0.75f;
             }
         }
         isSuicidal = Util.randomChance(suicidalChance);
@@ -103,7 +109,7 @@ public class AutoPlayer extends BasePlayer {
                 continue;
 
             // Don't walk outside zone unless you have gas mask
-            if (!gasMask.hasKillStreak() && !SafeZone.instance.inZone(entity.position))
+            if (!streaks.gasMask.hasKillStreak() && !SafeZone.instance.inZone(entity.position))
                 continue;
 
             float d = Vector2.distance(position, entity.position);
@@ -185,8 +191,8 @@ public class AutoPlayer extends BasePlayer {
         }
 
         if (Application.time >= nextBirthTime) {
-            // Every few seconds a bot can have 1 to 4 children.
-            int children = Util.randomBetween(1, 4);
+            // Every few seconds a bot can have 1 to 3 children.
+            int children = Util.randomBetween(1, 3);
 
             // Crazy bots have 2x more children, so killing them is smart.
             if (isCrazy)
@@ -203,15 +209,14 @@ public class AutoPlayer extends BasePlayer {
     public void onDied() {
         super.onDied();
 
-        // Let there be a 60% chance for the bot to respawn
-        if (Util.randomChance(60)) {
+        if (Util.randomChance(respawnChance)) {
             // Reset values
             this.health = 100;
-            this.ammo = 24;
+            this.ammo = 20;
 
             setPosition(Util.randomPositionInsideZone());
 
-            //Application.log("Player " + name + " respawned");
+            Application.log("Player " + name + " respawned");
 
             World.onRespawn();
         } else {

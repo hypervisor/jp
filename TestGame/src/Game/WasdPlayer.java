@@ -16,6 +16,8 @@ public class WasdPlayer extends ControllablePlayer {
         cfg.moveUp = KeyEvent.VK_W;
         cfg.moveDown = KeyEvent.VK_S;
         cfg.shoot = KeyEvent.VK_E;
+        cfg.multiShoot = KeyEvent.VK_Q;
+        cfg.respawn = KeyEvent.VK_R;
 
         return cfg;
     }

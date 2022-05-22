@@ -8,7 +8,7 @@ import Game.Explosion;
 
 public class Bomb extends BaseKillstreak {
     public Bomb(BasePlayer player) {
-        super(7, player);
+        super(10, player);
     }
 
     @Override
@@ -17,7 +17,7 @@ public class Bomb extends BaseKillstreak {
         Application.log("PLAYER BOMBED AREA");
 
         Vector2 explosionPosition = new Vector2(player.position.x, player.position.y);
-        Explosion.triggerExplosion(explosionPosition, 400, 250, null, player);
+        Explosion.triggerExplosion(explosionPosition, 500, 250, null, player);
 
         Application.log("!!!");
     }

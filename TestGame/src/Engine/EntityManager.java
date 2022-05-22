@@ -1,6 +1,6 @@
 package Engine;
 
-import Engine.BaseEntity;
+import Game.BaseEntity;
 import Game.BasePlayer;
 
 import java.util.ArrayList;

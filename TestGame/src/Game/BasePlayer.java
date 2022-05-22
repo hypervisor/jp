@@ -2,14 +2,14 @@ package Game;
 
 import Engine.*;
 import Items.Booster;
-import Killstreaks.*;
+import Killstreaks.BulletRain;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public abstract class BasePlayer extends BaseEntity implements Comparable<BasePlayer> {
     private static final boolean DEBUG_MODE = false;
+    private static final boolean DRAW_LABEL = true;
 
     public String name;
     protected float playerSize;
@@ -18,16 +18,10 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     protected Vector2 shootDirection;
     protected int kills;
     protected int deaths;
-    public int currentStreak;
-    private float boosterTime;
-    private boolean hasBooster;
+    protected float boosterTime;
+    protected boolean hasBooster;
 
-    public GasMask gasMask;
-    public FMJAmmo fmjAmmo;
-    public Bomb bomb;
-    public WeakNuke nuke;
-    public Turret turret;
-
+    StreakManager streaks;
     public ArrayList<AutoTurret> turrets;
 
     public float headSize;
@@ -48,14 +42,9 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
         this.shootDirection = new Vector2(0, 0);
         this.position = position;
         this.collider = new BoxCollider(position, new Vector2(50 * playerSize, 165 * playerSize));
-        this.gasMask = new GasMask(this);
-        this.fmjAmmo = new FMJAmmo(this);
-        this.bomb = new Bomb(this);
-        this.nuke = new WeakNuke(this);
-        this.turret = new Turret(this);
         this.kills = 0;
         this.deaths = 0;
-        this.currentStreak = 0;
+        this.streaks = new StreakManager(this);
         this.turrets = new ArrayList<>();
 
         headSize = 50 * playerSize;
@@ -69,12 +58,19 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     }
 
     public void onDied() {
+        if (streaks.martyrdom.hasKillStreak())
+            BulletRain.invokeRain(this, getPosition(), Util.randomBetween(20, 80));
+
         for (AutoTurret t : turrets) {
+            BulletRain.invokeRain(this, t.getPosition(), Util.randomBetween(20, 80));
             EntityManager.removeEntity(t);
         }
         turrets.clear();
 
         addDeath();
+
+        streaks.resetStreak();
+        hasBooster = false;
     }
 
     public void giveBooster() {
@@ -122,8 +118,8 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
         float damage = (float)Util.randomBetween(5, 25);
 
-        // If attacker has FMJ killstream, increase damage by 100%
-        if (p.attacker.fmjAmmo.hasKillStreak())
+        // If attacker has FMJ killstreak, increase damage by 100%
+        if (p.attacker.streaks.fmjAmmo.hasKillStreak())
             damage *= 2;
 
         // Projectile hit a player!
@@ -141,17 +137,11 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     }
 
     public void addDeath() {
-        currentStreak = 0;
         deaths++;
     }
 
     public void addKill() {
-        currentStreak++;
-        gasMask.incrementStreak();
-        fmjAmmo.incrementStreak();
-        bomb.incrementStreak();
-        nuke.incrementStreak();
-        turret.incrementStreak();
+        streaks.incrementStreak();
         kills++;
     }
 
@@ -188,7 +178,10 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
         if (isDead()) {
             d.drawText(Vector2.zero(), name + " is DEAD!", Color.RED);
         } else {
-            d.drawText(Vector2.zero(), name + " (" + (int)health + "HP, " + ammo + " bullets)");
+            if (DRAW_LABEL) {
+                d.drawText(Vector2.zero(), name + " (" + (int)health + "HP, " + ammo + " bullets)");
+            }
+
             d.drawCircle(Vector2.zero(), headSize, skinColor);
 
             d.drawLine(neck, cock, skinColor);
@@ -206,8 +199,8 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
     @Override
     public int compareTo(BasePlayer o) {
-        if (killDeathRatio() == o.killDeathRatio())
+        if (kills == o.kills)
             return 0;
-        return killDeathRatio() > o.killDeathRatio() ? -1 : 1;
+        return kills > o.kills ? -1 : 1;
     }
 }

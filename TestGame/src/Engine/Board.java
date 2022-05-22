@@ -1,7 +1,6 @@
 package Engine;
 
-import Engine.BaseEntity;
-import Engine.Input;
+import Game.BaseEntity;
 import Game.*;
 
 import javax.swing.*;

@@ -6,19 +6,26 @@ public class Drawing {
     private Graphics g;
     private Vector2 base;
     private boolean cameraRelative;
+    private boolean positionRelative;
 
     public Drawing(Graphics g, Vector2 base) {
         this.g = g;
         this.base = base;
         this.cameraRelative = true;
+        this.positionRelative = true;
     }
 
     public void setCameraRelative(boolean r) {
         cameraRelative = r;
     }
 
+    public void setPositionRelative(boolean r) {
+        positionRelative = r;
+    }
+
     private Vector2 makeRelative(Vector2 p) {
-        Vector2 relativePosition = new Vector2(base.x + p.x, base.y + p.y);
+
+        Vector2 relativePosition = positionRelative ? new Vector2(base.x + p.x, base.y + p.y) : p;
         if (cameraRelative)
             return Camera.offsetPosition(relativePosition);
         else

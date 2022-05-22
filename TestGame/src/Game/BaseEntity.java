@@ -1,6 +1,8 @@
-package Engine;
+package Game;
 
-import Game.Projectile;
+import Engine.GameObject;
+import Engine.ICollider;
+import Engine.Vector2;
 
 public abstract class BaseEntity implements GameObject {
     public Vector2 position;
@@ -49,6 +51,8 @@ public abstract class BaseEntity implements GameObject {
     }
 
     public void takeDamage(float d) {
+        if (isDead())
+            return;
         health -= d;
     }
     public void giveHealth(float h) {
