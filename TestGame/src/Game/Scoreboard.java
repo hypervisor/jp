@@ -38,7 +38,7 @@ public class Scoreboard extends BaseEntity {
             topPlayers[j] = players.get(j);
         }
 
-        Application.instance.setTitle(Application.GAME_NAME + ": " + players.size() + " alive");
+        Application.instance.setTitle(Application.GAME_NAME + ": " + players.size() + " alive (" + EntityManager.getEntities().size() + " entities)");
     }
 
     @Override

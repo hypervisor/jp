@@ -21,7 +21,7 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
     protected float boosterTime;
     protected boolean hasBooster;
 
-    StreakManager streaks;
+    public StreakManager streaks;
     public ArrayList<AutoTurret> turrets;
 
     public float headSize;
@@ -59,10 +59,10 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
     protected float getSpeedMultiplier() {
         if (streaks.superSneakers.hasKillStreak())
-            return 1.8f;
+            return 2.25f;
 
         if (streaks.sneakers.hasKillStreak())
-            return 1.4f;
+            return 1.5f;
 
         return 1f;
     }
@@ -130,7 +130,11 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
 
         // If attacker has FMJ killstreak, increase damage by 100%
         if (p.attacker.streaks.fmjAmmo.hasKillStreak())
-            damage *= 2;
+            damage *= 2f;
+
+        if (this instanceof ControllablePlayer) {
+            damage /= 1.5f;
+        }
 
         // Projectile hit a player!
         this.takeDamage(damage);

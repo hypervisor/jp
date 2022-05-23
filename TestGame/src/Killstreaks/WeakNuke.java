@@ -8,11 +8,12 @@ import Game.Explosion;
 
 public class WeakNuke extends BaseKillstreak {
     public WeakNuke(BasePlayer player) {
-        super(4, player);
+        super(14, player);
     }
 
     @Override
     protected void onStreakAcquired() {
+        System.out.println("WeakNuke!");
         Vector2 explosionPosition = new Vector2(player.position.x, player.position.y);
         Explosion.triggerExplosion(explosionPosition, 600, 2.0f, null, player);
     }

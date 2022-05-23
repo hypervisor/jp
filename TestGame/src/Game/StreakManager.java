@@ -12,6 +12,9 @@ public class StreakManager {
     public Martyrdom martyrdom;
     public Sneakers sneakers;
     public SuperSneakers superSneakers;
+    public CarpetBomb carpetBomb;
+    public CarpetGunner carpetGunner;
+    public MOAB moab;
 
     public int currentStreak;
 
@@ -25,6 +28,9 @@ public class StreakManager {
         martyrdom = new Martyrdom(player);
         sneakers = new Sneakers(player);
         superSneakers = new SuperSneakers(player);
+        carpetBomb = new CarpetBomb(player);
+        carpetGunner = new CarpetGunner(player);
+        moab = new MOAB(player);
 
         resetStreak();
     }
@@ -45,5 +51,8 @@ public class StreakManager {
         martyrdom.incrementStreak();
         sneakers.incrementStreak();
         superSneakers.incrementStreak();
+        carpetBomb.incrementStreak();
+        carpetGunner.incrementStreak();
+        moab.incrementStreak();
     }
 }

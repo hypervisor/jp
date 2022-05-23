@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class World {
     private static final int SPAWN_DENSITY = 1;
-    private static final int BALANCED_BOT_COUNT = 50;
+    private static final int BALANCED_BOT_COUNT = 75;
     private static int botCount = 0;
 
     public static void setup() {
@@ -18,6 +18,7 @@ public class World {
         //EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
         spawnBots(BALANCED_BOT_COUNT);
 
+        World.spawnRocks();
         World.spawnBarrels();
         World.spawnBandages();
         World.spawnAmmo();
@@ -30,8 +31,6 @@ public class World {
     }
 
     public static void spawnBots(int count, AutoPlayer mutationSource) {
-        System.out.println("Spawning " + count + " bots");
-
         for (int i = 0; i < count; i++) {
             EntityManager.spawnPlayer(new AutoPlayer("Bot " + (botCount + i), Util.randomPositionInsideZone(), mutationSource));
         }
@@ -41,6 +40,12 @@ public class World {
 
     public static void spawnBots(int count) {
         spawnBots(count, null);
+    }
+
+    public static void spawnRocks() {
+        for (int i = 0; i < Util.randomBetween(Rock.MIN_AMOUNT, Rock.MAX_AMOUNT); i++) {
+            EntityManager.addEntity(new Rock(Util.randomPositionInsideZone()));
+        }
     }
 
     public static void spawnBarrels() {
@@ -105,7 +110,7 @@ public class World {
             }
         }
 
-        for (int i = 0; i < SPAWN_DENSITY; i++) {
+        if (Util.randomChance(33)) {
             if (Util.randomChance(15)) {
                 EntityManager.addEntity(new SuperAmmo(Util.randomPositionInsideZone()));
             }

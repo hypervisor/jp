@@ -14,7 +14,7 @@ public class Barrel extends BaseItem {
     public static final int MAX_AMOUNT = 4;
 
     private static final Color BARREL_COLOR = new Color(183, 65, 14);
-    private static final float EXPLOSION_DISTANCE = 100;
+    private static final float EXPLOSION_DISTANCE = 150;
     private static final float EXPLOSION_DAMAGE_MULTIPLIER = 1.5f;
 
     public Barrel(Vector2 position) {

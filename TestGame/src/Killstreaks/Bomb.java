@@ -13,6 +13,7 @@ public class Bomb extends BaseKillstreak {
 
     @Override
     protected void onStreakAcquired() {
+        System.out.println("Bomb!");
         Application.log("!!!");
         Application.log("PLAYER BOMBED AREA");
 

@@ -10,7 +10,7 @@ import Game.Projectile;
 
 public class SuperSneakers extends BaseKillstreak {
     public SuperSneakers(BasePlayer player) {
-        super(16, player);
+        super(500, player);
     }
 
     @Override

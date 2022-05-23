@@ -31,6 +31,7 @@ public class Util {
     public static Vector2 randomPosition() {
         Vector2 screenSize = Application.getScreenSize();
 
+        // FIXME: This method is dogshit
         // Add bounds of 25 so items can't spawn at the edge of your screen
         return new Vector2((float)randomBetween(25, screenSize.getX() - 25), (float)randomBetween(25, screenSize.getY() - 25));
     }
