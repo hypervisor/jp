@@ -57,6 +57,9 @@ public class SafeZone extends BaseEntity {
     @Override
     public void update(Input i, float deltaTime) {
         for (BasePlayer player : EntityManager.getPlayerList()) {
+            if (player == null)
+                continue;
+
             if (inZone(player.topLeft()) ||
                 inZone(player.topRight()) ||
                 inZone(player.bottomLeft()) ||
@@ -79,7 +82,7 @@ public class SafeZone extends BaseEntity {
             player.takeDamage(damage / deltaTime);
 
             if (player.isDead())
-                player.onDied();
+                player.onDied(null);
         }
 
         if (zoneRadius > ZONE_FINAL_RADIUS)

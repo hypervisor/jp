@@ -1,14 +1,11 @@
 package Game;
 
 import Engine.*;
-import Killstreaks.BulletRain;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class ControllablePlayer extends BasePlayer {
     private static final float MOVEMENT_SPEED = 250;
-    private static final float AIM_SPEED = 10;
     private static final int START_BULLETS = 30;
     private static final float FIRE_RATE = 0.2f;
     private static final float MULTISHOOT_FIRERATE = 5f;
@@ -17,6 +14,7 @@ public class ControllablePlayer extends BasePlayer {
     private float nextMultiShootTime;
     public float fireRate;
     private float nextShootTime;
+    private BasePlayer killer;
 
     public ControllablePlayer(String name, Vector2 position, KeyConfig keys, Color skinColor) {
         super(name, position, skinColor);
@@ -25,6 +23,8 @@ public class ControllablePlayer extends BasePlayer {
         this.fireRate = FIRE_RATE;
         setNextMultiShootTime();
         setFireTime();
+
+        this.killer = null;
     }
 
     private void setFireTime() {
@@ -42,6 +42,7 @@ public class ControllablePlayer extends BasePlayer {
         this.streaks.resetStreak();
         this.boosterTime = 0;
         this.hasBooster = false;
+        this.killer = null;
         setPosition(Util.randomPositionInsideZone());
 
         Application.log("Player " + name + " respawned");
@@ -52,38 +53,24 @@ public class ControllablePlayer extends BasePlayer {
     }
 
     private void handleMovement(Input i, float deltaTime) {
-        float speed = MOVEMENT_SPEED * deltaTime;
-        if (streaks.sneakers.hasKillStreak())
-            speed *= 1.25f;
+        float speed = MOVEMENT_SPEED * getSpeedMultiplier() * deltaTime;
 
         Vector2 targetDirection = new Vector2(0, 0);
 
         // Handle horizontal movement
         if (i.getKey(keys.moveLeft)) {
-            //this.shootDirection.x = -1;
             targetDirection.x = -1;
-            //this.position.x -= speed;
-            //Camera.cameraPosition.x -= speed;
         }
         if (i.getKey(keys.moveRight)) {
-            //this.shootDirection.x = 1;
             targetDirection.x = 1;
-            //this.position.x += speed;
-            //Camera.cameraPosition.x += speed;
         }
 
         // Handle vertical movement
         if (i.getKey(keys.moveUp)) {
-            //this.shootDirection.y = -1;
             targetDirection.y = -1;
-            //this.position.y -= speed;
-            //Camera.cameraPosition.y -= speed;
         }
         if (i.getKey(keys.moveDown)) {
-            //this.shootDirection.y = 1;
             targetDirection.y = 1;
-            //this.position.y += speed;
-            //Camera.cameraPosition.y += speed;
         }
 
         targetDirection.normalize();
@@ -91,7 +78,7 @@ public class ControllablePlayer extends BasePlayer {
         this.position.x += targetDirection.x * speed;
         this.position.y += targetDirection.y * speed;
 
-        Camera.focusOn(middle());
+        Camera.focusOn(getChest());
 
         Vector2 p = Application.getCursorPosition();
         shootDirection = Vector2.difference(Camera.offsetPosition(getChest()), p).getNormalized();
@@ -108,7 +95,7 @@ public class ControllablePlayer extends BasePlayer {
         Vector2 shootPosition = new Vector2(position.x + chest.x, position.y + chest.y);
 
         // Spawn projectile
-        Projectile p = new Projectile(this, shootPosition, currentShootDirection);
+        Projectile p = new Projectile(this, shootPosition, currentShootDirection, 1f);
 
         // Add projectile to entity list
         EntityManager.addEntity(p);
@@ -127,10 +114,19 @@ public class ControllablePlayer extends BasePlayer {
             Vector2 shootDirection = new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
 
             // Spawn projectile
-            Projectile p = new Projectile(this, shootPosition, shootDirection);
+            Projectile p = new Projectile(this, shootPosition, shootDirection, 1f);
 
             // Add projectile to entity list
             EntityManager.addEntity(p);
+        }
+    }
+
+    @Override
+    public void onDied(BasePlayer attacker) {
+        super.onDied(attacker);
+
+        if (attacker != null && !attacker.isDead()) {
+            killer = attacker;
         }
     }
 
@@ -165,6 +161,9 @@ public class ControllablePlayer extends BasePlayer {
             if (i.getKeyDown(keys.respawn)) {
                 respawn();
             } else {
+                if (killer != null && !killer.isDead()) {
+                    Camera.focusOn(killer.getChest());
+                }
                 return;
             }
         }

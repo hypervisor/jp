@@ -12,12 +12,14 @@ public class Projectile extends BaseEntity {
     private Color color;
     public BasePlayer attacker;
     private float dieTime;
+    private float speedMultiplier;
 
-    public Projectile(BasePlayer attacker, Vector2 position, Vector2 direction) {
+    public Projectile(BasePlayer attacker, Vector2 position, Vector2 direction, float speedMultiplier) {
         this.attacker = attacker;
         this.position = position;
         this.direction = direction;
         this.color = Util.randomColor();
+        this.speedMultiplier = speedMultiplier;
         this.dieTime = Application.time + PROJECTILE_LIFETIME;
     }
 
@@ -32,8 +34,8 @@ public class Projectile extends BaseEntity {
         }
 
         Vector2 movement = new Vector2(
-                direction.x * PROJECTILE_SPEED * deltaTime,
-                direction.y * PROJECTILE_SPEED * deltaTime);
+                direction.x * PROJECTILE_SPEED * speedMultiplier * deltaTime,
+                direction.y * PROJECTILE_SPEED * speedMultiplier * deltaTime);
 
         position = new Vector2(position.x + movement.x, position.y + movement.y);
 

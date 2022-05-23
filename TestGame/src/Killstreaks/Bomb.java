@@ -8,7 +8,7 @@ import Game.Explosion;
 
 public class Bomb extends BaseKillstreak {
     public Bomb(BasePlayer player) {
-        super(10, player);
+        super(8, player);
     }
 
     @Override

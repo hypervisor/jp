@@ -13,7 +13,7 @@ public class BulletRain extends BaseKillstreak {
     private static final int BULLETS_FIRED = 150;
 
     public BulletRain(BasePlayer player) {
-        super(15, player);
+        super(18, player);
     }
 
     public static void invokeRain(BasePlayer fromPlayer, Vector2 shootPosition, int bullets) {
@@ -23,7 +23,7 @@ public class BulletRain extends BaseKillstreak {
             Vector2 shootDirection = new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
 
             // Spawn projectile
-            Projectile p = new Projectile(fromPlayer, shootPosition, shootDirection);
+            Projectile p = new Projectile(fromPlayer, shootPosition, shootDirection, Util.randomBetween(0.5f, 1.5f));
 
             // Add projectile to entity list
             EntityManager.addEntity(p);

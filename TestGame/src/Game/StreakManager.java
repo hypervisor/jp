@@ -11,6 +11,7 @@ public class StreakManager {
     public WeakNuke weakNuke;
     public Martyrdom martyrdom;
     public Sneakers sneakers;
+    public SuperSneakers superSneakers;
 
     public int currentStreak;
 
@@ -23,6 +24,7 @@ public class StreakManager {
         turret = new Turret(player);
         martyrdom = new Martyrdom(player);
         sneakers = new Sneakers(player);
+        superSneakers = new SuperSneakers(player);
 
         resetStreak();
     }
@@ -42,5 +44,6 @@ public class StreakManager {
         turret.incrementStreak();
         martyrdom.incrementStreak();
         sneakers.incrementStreak();
+        superSneakers.incrementStreak();
     }
 }

@@ -3,7 +3,9 @@ package Game;
 import Engine.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Scoreboard extends BaseEntity {
     private static final Color SCOREBOARD_BG_COLOR = new Color(255, 255, 255);
@@ -19,12 +21,24 @@ public class Scoreboard extends BaseEntity {
 
     @Override
     public void update(Input i, float deltaTime) {
-        var players = EntityManager.getPlayerList();
+        List<BasePlayer> players = new ArrayList<>();
+        for (BasePlayer player : EntityManager.getPlayerList()) {
+            if (player == null)
+                continue;
+            if (player.isDead())
+                continue;
+            players.add(player);
+        }
+
         Collections.sort(players);
 
         for (int j = 0; j < SCOREBOARD_SIZE; j++) {
+            if (j > (players.size() - 1))
+                break;
             topPlayers[j] = players.get(j);
         }
+
+        Application.instance.setTitle(Application.GAME_NAME + ": " + players.size() + " alive");
     }
 
     @Override

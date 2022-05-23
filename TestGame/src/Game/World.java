@@ -4,8 +4,11 @@ import Engine.*;
 import Game.*;
 import Items.*;
 
+import java.util.Random;
+
 public class World {
-    private static final int SPAWN_DENSITY = 2;
+    private static final int SPAWN_DENSITY = 1;
+    private static final int BALANCED_BOT_COUNT = 50;
     private static int botCount = 0;
 
     public static void setup() {
@@ -13,7 +16,7 @@ public class World {
 
         EntityManager.spawnPlayer(new WasdPlayer("Adrian", Util.randomPositionInsideZone()));
         //EntityManager.spawnPlayer(new ArrowPlayer("William", Util.randomPositionInsideZone()));
-        spawnBots(50);
+        spawnBots(BALANCED_BOT_COUNT);
 
         World.spawnBarrels();
         World.spawnBandages();
@@ -27,6 +30,8 @@ public class World {
     }
 
     public static void spawnBots(int count, AutoPlayer mutationSource) {
+        System.out.println("Spawning " + count + " bots");
+
         for (int i = 0; i < count; i++) {
             EntityManager.spawnPlayer(new AutoPlayer("Bot " + (botCount + i), Util.randomPositionInsideZone(), mutationSource));
         }
@@ -82,10 +87,23 @@ public class World {
         EntityManager.addEntity(new SuperBandage(Util.randomPosition()));
     }
 
+    public static int playersAlive() {
+        int alive = 0;
+        for (BasePlayer player : EntityManager.getPlayerList()) {
+            if (!player.isDead())
+                alive++;
+        }
+        return alive;
+    }
+
     public static void onRespawn() {
         SafeZone.instance.onRespawn();
 
-        World.spawnBots(Util.randomBetween(1, 3));
+        if (playersAlive() < (BALANCED_BOT_COUNT / 2)) {
+            if (Util.randomChance(30)) {
+                spawnBots(Util.randomBetween(1, 8));
+            }
+        }
 
         for (int i = 0; i < SPAWN_DENSITY; i++) {
             if (Util.randomChance(15)) {
@@ -97,7 +115,7 @@ public class World {
                 EntityManager.addEntity(new Bandage(Util.randomPosition()));
             }
 
-            if (Util.randomChance(60)) {
+            if (Util.randomChance(40)) {
                 EntityManager.addEntity(new Ammo(Util.randomPositionInsideZone()));
                 EntityManager.addEntity(new Bandage(Util.randomPositionInsideZone()));
             }

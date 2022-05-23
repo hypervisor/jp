@@ -39,7 +39,7 @@ public class AutoPlayer extends BasePlayer {
             fireRate = Util.randomBetween(0.1f, 6f);
             birthRate = Util.randomBetween(12f, 50f);
             suicidalChance = Util.randomBetween(0.5f, 50.f);
-            respawnChance = Util.randomBetween(5f, 75.f);
+            respawnChance = Util.randomBetween(25f, 75.f);
             playerSize = Util.randomBetween(0.65f, 1.5f);
             isCrazy = Util.randomChance(10);
             isRacist = Util.randomChance(isCrazy ? 90 : 60);
@@ -65,6 +65,9 @@ public class AutoPlayer extends BasePlayer {
         var alivePlayers = new ArrayList<BasePlayer>();
         var players = EntityManager.getPlayerList();
         for (var player : players) {
+            if (player == this)
+                continue;
+
             if (player.isDead())
                 continue;
 
@@ -140,7 +143,7 @@ public class AutoPlayer extends BasePlayer {
     }
 
     private void moveTo(Vector2 targetPosition, float deltaTime) {
-        setPosition(Vector2.moveTowards(position, targetPosition, movementSpeed * deltaTime));
+        setPosition(Vector2.moveTowards(position, targetPosition, movementSpeed * getSpeedMultiplier() * deltaTime));
     }
 
     @Override
@@ -175,7 +178,7 @@ public class AutoPlayer extends BasePlayer {
                     Vector2 shootDirection = Vector2.difference(shootPosition, target.getChest()).getNormalized();
 
                     // Spawn projectile
-                    Projectile p = new Projectile(this, shootPosition, shootDirection);
+                    Projectile p = new Projectile(this, shootPosition, shootDirection, 1);
 
                     // Add projectile to entity list
                     EntityManager.addEntity(p);
@@ -206,8 +209,8 @@ public class AutoPlayer extends BasePlayer {
     }
 
     @Override
-    public void onDied() {
-        super.onDied();
+    public void onDied(BasePlayer attacker) {
+        super.onDied(attacker);
 
         if (Util.randomChance(respawnChance)) {
             // Reset values

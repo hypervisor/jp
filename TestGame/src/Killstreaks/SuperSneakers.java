@@ -8,9 +8,9 @@ import Game.BasePlayer;
 import Game.Explosion;
 import Game.Projectile;
 
-public class Martyrdom extends BaseKillstreak {
-    public Martyrdom(BasePlayer player) {
-        super(12, player);
+public class SuperSneakers extends BaseKillstreak {
+    public SuperSneakers(BasePlayer player) {
+        super(16, player);
     }
 
     @Override

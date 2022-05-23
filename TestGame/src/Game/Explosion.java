@@ -29,7 +29,8 @@ public class Explosion extends BaseEntity {
 
     public static void triggerExplosion(Vector2 position, float size, float damageMultiplier, BaseEntity source, BasePlayer toIgnore) {
         // Explode - just do damage to everyone around us within a certain distance
-        for (BasePlayer player : EntityManager.getPlayerList()) {
+        var list = EntityManager.getPlayerList();
+        for (BasePlayer player : list) {
             if (player == toIgnore)
                 continue;
 
@@ -44,6 +45,13 @@ public class Explosion extends BaseEntity {
             float damage = ((size - distance) / size) * 100 * damageMultiplier;
 
             player.takeDamage(damage);
+
+            if (player.isDead()) {
+                if (toIgnore != null) {
+                    toIgnore.addKill();
+                }
+                player.onDied(toIgnore);
+            }
             //Application.log("Explosion caused " + damage + " damage to " + player.name);
         }
 
@@ -59,6 +67,7 @@ public class Explosion extends BaseEntity {
                 continue;
 
             /*
+            Stack overflow...
             if (entity instanceof Barrel) {
                 ((Barrel)entity).explodeBarrel();
             } else if (entity instanceof LandMine) {

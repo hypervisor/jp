@@ -57,7 +57,17 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
         rightFoot = new Vector2(cock.x + (20 * playerSize), cock.y + (40 * playerSize));
     }
 
-    public void onDied() {
+    protected float getSpeedMultiplier() {
+        if (streaks.superSneakers.hasKillStreak())
+            return 1.8f;
+
+        if (streaks.sneakers.hasKillStreak())
+            return 1.4f;
+
+        return 1f;
+    }
+
+    public void onDied(BasePlayer attacker) {
         if (streaks.martyrdom.hasKillStreak())
             BulletRain.invokeRain(this, getPosition(), Util.randomBetween(20, 80));
 
@@ -129,7 +139,7 @@ public abstract class BasePlayer extends BaseEntity implements Comparable<BasePl
         // Check if this hit killed the player
         if (this.isDead()) {
             p.attacker.addKill();
-            onDied();
+            onDied(p.attacker);
 
             Application.log("Player " + this.name + " was killed by " + p.attacker.name);
         }

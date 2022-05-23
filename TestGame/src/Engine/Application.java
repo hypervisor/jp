@@ -4,11 +4,13 @@ import java.awt.*;
 import javax.swing.JFrame;
 
 public class Application extends JFrame {
+    public static final String GAME_NAME = "Minigrounds";
+
     private static boolean ENABLE_LOGS = false;
     public static final int SCREEN_W = 1200;
     public static final int SCREEN_H = 800;
 
-    private static Application instance;
+    public static Application instance;
 
     public static Vector2 getScreenSize() {
         Dimension size = instance.getSize();
@@ -26,7 +28,7 @@ public class Application extends JFrame {
         instance = this;
         setSize(SCREEN_W, SCREEN_H);
         add(new Board());
-        setTitle("Call of Duty: Black Ops V");
+        setTitle(GAME_NAME);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);

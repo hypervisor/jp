@@ -7,7 +7,7 @@ import Game.BasePlayer;
 
 public class Turret extends BaseKillstreak {
     public Turret(BasePlayer player) {
-        super(5, player);
+        super(14, player);
     }
 
     @Override

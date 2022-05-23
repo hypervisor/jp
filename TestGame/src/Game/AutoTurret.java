@@ -7,7 +7,7 @@ import java.awt.*;
 public class AutoTurret extends BaseEntity {
     private static final float TURRET_MAX_DISTANCE = 600;
     private static final float TURRET_FIRE_RATE = 0.25f;
-    private static final float TURRET_LIFETIME = 30f;
+    private static final float TURRET_LIFETIME = 20f;
 
     public BasePlayer owner;
     public BasePlayer target;
@@ -52,14 +52,16 @@ public class AutoTurret extends BaseEntity {
             shootDirection = Vector2.difference(position, target.getChest()).getNormalized();
         }
 
-        if (Application.time >= nextShotTime && shootDirection != null) {
-            // Spawn projectile
-            Projectile p = new Projectile(owner, position, shootDirection);
+        if (target != null && !target.isDead()) {
+            if (Application.time >= nextShotTime && shootDirection != null) {
+                // Spawn projectile
+                Projectile p = new Projectile(owner, position, shootDirection, 1f);
 
-            // Add projectile to entity list
-            EntityManager.addEntity(p);
+                // Add projectile to entity list
+                EntityManager.addEntity(p);
 
-            nextShotTime = Application.time + TURRET_FIRE_RATE;
+                nextShotTime = Application.time + TURRET_FIRE_RATE;
+            }
         }
 
         if (Application.time > dieTime) {
@@ -72,6 +74,10 @@ public class AutoTurret extends BaseEntity {
     public void render(Drawing d) {
         d.fillCircle(new Vector2(-40, -40), 80, Color.black);
         d.fillCircle(new Vector2(-20, -20), 40, Color.darkGray);
+        d.drawText(Vector2.zero(), "Owner: " + owner + " (" + owner.getHealth() + ")", Color.RED);
+        if (target != null) {
+            d.drawText(new Vector2(0, 25), "Target: " + target + " (" + target.getHealth() + ")", Color.RED);
+        }
 
         if (shootDirection != null)
             d.drawLine(Vector2.zero(), new Vector2(shootDirection.x * 50, shootDirection.y * 50), Color.RED);
